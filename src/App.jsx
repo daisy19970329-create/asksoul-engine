@@ -203,7 +203,7 @@ const App = () => {
   const generateArticle = async () => {
     if (!topic) return;
     setIsGeneratingContent(true);
-    const apiKey = "AIzaSyCekJI_NdeEbd1BCno2XyyVk1fHFuwIGe0";
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
     let schemaPrompt = JSON.stringify(PLACEHOLDER_DATA[templateType]);
     
