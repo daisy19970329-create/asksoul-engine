@@ -1,7 +1,8 @@
 import React from 'react';
-import { Camera, Sparkles, Award } from 'lucide-react';
+import { Award, AlertCircle, Quote } from 'lucide-react';
+import ImageSlot from '../components/ImageSlot';
 
-const RankingTemplate = ({ content, theme, onUpdate, isPreviewMode }) => {
+const RankingTemplate = ({ content, theme, onUpdate, isPreviewMode, onGenerateImage, onRemoveImage, onUploadImage }) => {
   const handleItemUpdate = (index, field, value) => {
     const newRankings = [...(content.rankings || [])];
     newRankings[index] = { ...newRankings[index], [field]: value };
@@ -9,109 +10,123 @@ const RankingTemplate = ({ content, theme, onUpdate, isPreviewMode }) => {
   };
 
   return (
-    <div className="space-y-12 relative z-10 w-full">
-      {(content.rankings || []).map((item, idx) => (
-        <div key={idx} className={`relative flex flex-col md:flex-row gap-10 items-start ${theme.highlight} rounded-[2.5rem] p-8 md:p-10 border ${theme.cardBorder} transition-all hover:scale-[1.01]`}>
-          
-          {/* Rank Number Badge */}
-          <div className={`absolute -left-5 -top-5 w-14 h-14 rounded-2xl ${idx < 3 ? 'bg-gradient-to-br from-amber-300 to-orange-400' : theme.iconBg} ${idx < 3 ? 'text-white' : theme.iconText} flex items-center justify-center text-2xl font-black shadow-xl z-20 transform -rotate-12`}>
-            {idx + 1}
+    <div className="space-y-12 relative z-10 w-full max-w-2xl mx-auto">
+      {/* Expert's Soul Warning at Top */}
+      <div className={`${theme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-8 border ${theme.cardBorder} shadow-xl relative overflow-hidden group`}>
+        <div className="flex items-center gap-3 mb-3">
+          <div className={`p-2 bg-white/40 rounded-xl ${theme.accentText}`}>
+            <AlertCircle className="w-4 h-4" />
           </div>
-
-          {/* Left: Image Slot */}
-          <div className="w-full md:w-1/3 flex-shrink-0">
-            <div className={`relative aspect-square rounded-3xl overflow-hidden ${theme.cardBg} border-2 ${theme.cardBorder} shadow-inner flex items-center justify-center group`}>
-              {item.image_url ? (
-                <img src={item.image_url} alt={item.sign} className="w-full h-full object-cover" />
-              ) : (
-                <div className="text-center opacity-40">
-                  <Camera className="w-10 h-10 mx-auto mb-2" />
-                  <p className="text-[10px] font-black tracking-widest uppercase">Visual</p>
-                </div>
-              )}
-            </div>
+          <h4 className={`font-black uppercase tracking-widest text-[10px] ${theme.accentText}`}>写在前面 / Note</h4>
+        </div>
+        <p className={`text-base leading-relaxed ${theme.bodyText} font-medium italic opacity-70`}>
+          {content.soul_warning || "在揭晓榜单之前，请记得：排名从不定义你的价值，它只是一种观察生活的视角。"}
+        </p>
+      </div>
+      {(content.rankings || []).map((item, idx) => {
+        const showVisual = idx < 3;
+        return (
+          <div key={idx} className={`relative flex flex-col gap-8 items-center text-center ${theme.igGradient} backdrop-blur-xl rounded-[3rem] p-10 md:p-14 border ${theme.cardBorder} transition-all hover:scale-[1.01] shadow-xl overflow-hidden`}>
             
-            {!isPreviewMode && (
-              <div className="mt-4 space-y-2">
-                <div className="flex items-center gap-2 opacity-50">
-                  <Sparkles className="w-3 h-3" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">Image Prompt</span>
-                </div>
-                <input
-                  value={item.image_prompt || ""}
-                  onChange={(e) => handleItemUpdate(idx, 'image_prompt', e.target.value)}
-                  className="w-full bg-black/5 rounded-lg px-3 py-1.5 text-[10px] font-mono outline-none focus:ring-1 focus:ring-indigo-100"
-                  placeholder="提示词..."
+            {/* Rank Number Badge */}
+            <div className={`absolute -left-2 -top-2 w-16 h-16 rounded-3xl ${idx < 3 ? 'bg-white shadow-2xl border-4 border-white/60 backdrop-blur-md' : theme.iconBg} ${idx < 3 ? theme.titleText : theme.iconText} flex items-center justify-center text-3xl font-black z-20 transform -rotate-12`}>
+              {idx + 1}
+            </div>
+
+            {/* Top 3 Visual Section */}
+            {showVisual && (
+              <div className="w-full max-w-[360px] mx-auto">
+                <ImageSlot 
+                  url={item.image_url}
+                  prompt={item.image_prompt}
+                  onPromptChange={(val) => handleItemUpdate(idx, 'image_prompt', val)}
+                  onGenerate={() => onGenerateImage('rankings', idx, item.image_prompt)}
+                  onRemove={() => onRemoveImage('rankings', idx)}
+                  onUpload={(data) => onUploadImage('rankings', idx, data)}
+                  isPreviewMode={isPreviewMode}
+                  theme={theme}
+                  className="aspect-square"
+                  recommendSize="1:1 (800x800px)"
                 />
               </div>
             )}
-          </div>
 
-          {/* Right: Content */}
-          <div className="flex-1 space-y-6">
-            <div className="flex flex-wrap items-center gap-3">
-              {isPreviewMode ? (
-                <span className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black tracking-widest uppercase border ${theme.cardBorder}`}>
-                  {item.tag || "CATEGORY"}
-                </span>
-              ) : (
-                <input
-                  value={item.tag || ""}
-                  onChange={(e) => handleItemUpdate(idx, 'tag', e.target.value)}
-                  className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black tracking-widest uppercase border ${theme.cardBorder} outline-none w-28`}
-                  placeholder="标签"
-                />
-              )}
-            </div>
+            {/* Content Section */}
+            <div className="w-full space-y-8">
+              <div className="space-y-4">
+                <div className="flex justify-center">
+                  {isPreviewMode ? (
+                    <span className={`px-5 py-1.5 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black tracking-[0.2em] uppercase border ${theme.cardBorder} shadow-sm`}>
+                      {item.tag || "CATEGORY"}
+                    </span>
+                  ) : (
+                    <input
+                      value={item.tag || ""}
+                      onChange={(e) => handleItemUpdate(idx, 'tag', e.target.value)}
+                      className={`px-5 py-1.5 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black tracking-[0.2em] uppercase border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none w-32 text-center`}
+                      placeholder="标签"
+                    />
+                  )}
+                </div>
 
-            <div className="space-y-4">
-              {isPreviewMode ? (
-                <h3 className={`text-2xl md:text-3xl font-black font-serif ${theme.titleText}`}>
-                  {item.sign || "项目名称"}
-                </h3>
-              ) : (
-                <input
-                  value={item.sign || ""}
-                  onChange={(e) => handleItemUpdate(idx, 'sign', e.target.value)}
-                  className={`w-full bg-transparent text-2xl md:text-3xl font-black font-serif ${theme.titleText} border-b border-dashed border-gray-300 focus:border-gray-500 outline-none pb-1`}
-                  placeholder="输入名称"
-                />
-              )}
-
-              {isPreviewMode ? (
-                <p className={`text-base leading-[1.8] opacity-80 ${theme.bodyText} font-medium`}>
-                  {item.desc || "在这里输入一段优美的、带有治愈感的描述文字，深度剖析为什么它能排在这个位置。"}
-                </p>
-              ) : (
-                <textarea
-                  value={item.desc || ""}
-                  onChange={(e) => handleItemUpdate(idx, 'desc', e.target.value)}
-                  className={`w-full bg-transparent text-base leading-[1.8] opacity-80 ${theme.bodyText} font-medium outline-none resize-none min-h-[80px]`}
-                  placeholder="深度描述..."
-                />
-              )}
-            </div>
-
-            {/* Addictive Factor / Score */}
-            <div className={`inline-flex items-center gap-3 px-6 py-3 ${theme.quoteBg} rounded-2xl border ${theme.cardBorder}`}>
-              <Award className={`w-5 h-5 ${theme.accentText} opacity-60`} />
-              <div>
-                <p className="text-[10px] font-black opacity-50 uppercase tracking-widest mb-0.5">Addictive Factor</p>
                 {isPreviewMode ? (
-                  <p className={`font-bold ${theme.accentText}`}>{item.addictiveFactor || "4.5 / 5.0"}</p>
+                  <h3 className={`text-3xl md:text-4xl font-black font-serif ${theme.titleText} leading-tight`}>
+                    {item.sign || "项目名称"}
+                  </h3>
                 ) : (
-                  <input
-                    value={item.addictiveFactor || ""}
-                    onChange={(e) => handleItemUpdate(idx, 'addictiveFactor', e.target.value)}
-                    className={`bg-transparent font-bold ${theme.accentText} outline-none w-full`}
-                    placeholder="评分或亮点"
+                  <textarea
+                    value={item.sign || ""}
+                    onChange={(e) => handleItemUpdate(idx, 'sign', e.target.value)}
+                    className={`w-full bg-transparent text-3xl md:text-4xl font-black font-serif ${theme.titleText} border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none py-1 text-center resize-none overflow-hidden`}
+                    rows={1}
+                    placeholder="输入名称"
+                  />
+                )}
+
+                {isPreviewMode ? (
+                  <p className={`text-lg leading-[1.8] opacity-80 ${theme.bodyText} font-medium max-w-lg mx-auto`}>
+                    {item.desc || "详细描述文案..."}
+                  </p>
+                ) : (
+                  <textarea
+                    value={item.desc || ""}
+                    onChange={(e) => handleItemUpdate(idx, 'desc', e.target.value)}
+                    className={`w-full bg-transparent text-lg leading-[1.8] opacity-80 ${theme.bodyText} font-medium outline-none resize-none min-h-[100px] text-center border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 max-w-lg mx-auto`}
+                    placeholder="深度描述..."
                   />
                 )}
               </div>
+
+              {/* Addictive Factor / Score */}
+              <div className="flex justify-center">
+                <div className={`inline-flex items-center gap-4 px-8 py-4 ${theme.quoteBg} rounded-3xl border ${theme.cardBorder} shadow-lg`}>
+                  <Award className={`w-6 h-6 ${theme.accentText} opacity-70`} />
+                  <div className="text-left">
+                    <p className="text-[10px] font-black opacity-50 uppercase tracking-widest mb-0.5">Rating Insight</p>
+                    {isPreviewMode ? (
+                      <p className={`font-black text-xl ${theme.accentText}`}>{item.addictiveFactor || "Premium"}</p>
+                    ) : (
+                      <input
+                        value={item.addictiveFactor || ""}
+                        onChange={(e) => handleItemUpdate(idx, 'addictiveFactor', e.target.value)}
+                        className={`bg-transparent font-black text-xl ${theme.accentText} outline-none w-full border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20`}
+                        placeholder="评分或亮点"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Decorative background number for non-visual items */}
+            {!showVisual && (
+              <div className={`absolute -right-8 -bottom-8 text-[12rem] font-black opacity-[0.03] select-none pointer-events-none ${theme.iconText}`}>
+                {idx + 1}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

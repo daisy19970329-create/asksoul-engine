@@ -1,7 +1,7 @@
-import React from 'react';
-import { Camera, Sparkles, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Quote } from 'lucide-react';
+import ImageSlot from '../components/ImageSlot';
 
-const StepsGuideTemplate = ({ content, theme, onUpdate, isPreviewMode }) => {
+const StepsGuideTemplate = ({ content, theme, onUpdate, isPreviewMode, onGenerateImage, onRemoveImage, onUploadImage }) => {
   const handleStepUpdate = (index, field, value) => {
     const newSteps = [...(content.steps || [])];
     newSteps[index] = { ...newSteps[index], [field]: value };
@@ -9,82 +9,92 @@ const StepsGuideTemplate = ({ content, theme, onUpdate, isPreviewMode }) => {
   };
 
   return (
-    <div className="space-y-16 relative z-10 w-full">
-      {(content.steps || []).map((step, idx) => (
-        <div key={idx} className={`relative flex flex-col md:flex-row gap-10 items-start group`}>
-          
-          {/* Step Number & Connector */}
-          <div className="flex flex-col items-center shrink-0 pt-2">
-            <div className={`w-10 h-10 rounded-full ${theme.accentBg} ${theme.accentText} flex items-center justify-center font-black shadow-lg z-10`}>
-              {idx + 1}
-            </div>
-            {idx < (content.steps.length - 1) && (
-              <div className={`w-0.5 h-32 md:h-40 ${theme.cardBorder} border-dashed border-l-2 opacity-30 my-4`}></div>
-            )}
-          </div>
+    <div className="relative z-10 w-full max-w-3xl mx-auto pl-12 md:pl-16">
+      {/* Background Vertical Guide Line */}
+      <div className={`absolute left-[2.2rem] md:left-[3.2rem] top-0 bottom-0 w-0.5 ${theme.accentBg} opacity-20`}></div>
 
-          {/* Step Content */}
-          <div className={`flex-1 ${theme.highlight} rounded-[2.5rem] p-8 md:p-10 border ${theme.cardBorder} shadow-xl hover:shadow-2xl transition-all`}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div className="space-y-20">
+        {(content.steps || []).map((step, idx) => {
+          const showVisual = idx < 2;
+          return (
+            <div key={idx} className="relative group">
               
-              <div className="space-y-4">
-                {isPreviewMode ? (
-                  <h3 className={`text-2xl md:text-3xl font-black font-serif ${theme.titleText}`}>
-                    {step.title || "步骤名称"}
-                  </h3>
-                ) : (
-                  <input
-                    value={step.title || ""}
-                    onChange={(e) => handleStepUpdate(idx, 'title', e.target.value)}
-                    className={`w-full bg-transparent text-2xl md:text-3xl font-black font-serif ${theme.titleText} border-b border-dashed border-gray-300 focus:border-gray-500 outline-none pb-1`}
-                    placeholder="步骤名"
-                  />
-                )}
-
-                {isPreviewMode ? (
-                  <p className={`text-base leading-relaxed opacity-80 ${theme.bodyText} font-medium`}>
-                    {step.desc || "详细说明这个步骤应该如何执行..."}
-                  </p>
-                ) : (
-                  <textarea
-                    value={step.desc || ""}
-                    onChange={(e) => handleStepUpdate(idx, 'desc', e.target.value)}
-                    className={`w-full bg-transparent text-base leading-relaxed opacity-80 ${theme.bodyText} font-medium outline-none resize-none min-h-[80px]`}
-                    placeholder="步骤详细描述..."
-                  />
-                )}
+              {/* Step Number Dot */}
+              <div className={`absolute -left-[3.1rem] md:-left-[4.1rem] top-1.5 w-8 h-8 rounded-full ${theme.accentBg} ${theme.accentText} flex items-center justify-center font-black text-sm shadow-xl z-20 border-2 border-white`}>
+                {idx + 1}
               </div>
 
-              {/* Step Image */}
-              <div className="space-y-4">
-                <div className={`relative aspect-video rounded-3xl overflow-hidden ${theme.cardBg} border-2 ${theme.cardBorder} shadow-inner flex items-center justify-center`}>
-                  {step.image_url ? (
-                    <img src={step.image_url} alt={step.title} className="w-full h-full object-cover" />
+              {/* Step Content */}
+              <div className="space-y-8 w-full max-w-2xl">
+                <div className="space-y-3">
+                  {isPreviewMode ? (
+                    <h3 className={`text-2xl md:text-3xl font-black font-serif ${theme.titleText}`}>
+                      {step.title || "步骤名称"}
+                    </h3>
                   ) : (
-                    <div className="text-center opacity-40">
-                      <Camera className="w-10 h-10 mx-auto mb-2" />
-                      <p className="text-[10px] font-black tracking-widest uppercase">Step Visual</p>
-                    </div>
+                    <textarea
+                      value={step.title || ""}
+                      onChange={(e) => handleStepUpdate(idx, 'title', e.target.value)}
+                      className={`w-full bg-transparent text-2xl md:text-3xl font-black font-serif ${theme.titleText} border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none py-1 resize-none overflow-hidden`}
+                      rows={1}
+                      placeholder="步骤名"
+                    />
+                  )}
+
+                  {isPreviewMode ? (
+                    <p className={`text-lg leading-relaxed opacity-80 ${theme.bodyText} font-medium`}>
+                      {step.desc || "详细说明这个步骤..."}
+                    </p>
+                  ) : (
+                    <textarea
+                      value={step.desc || ""}
+                      onChange={(e) => handleStepUpdate(idx, 'desc', e.target.value)}
+                      className={`w-full bg-transparent text-lg leading-relaxed opacity-80 ${theme.bodyText} font-medium outline-none resize-none min-h-[60px] border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20`}
+                      placeholder="步骤详细描述..."
+                    />
                   )}
                 </div>
-                
-                {!isPreviewMode && (
-                  <div className="flex items-center gap-2 px-4 opacity-50">
-                    <Sparkles className="w-3 h-3" />
-                    <input
-                      value={step.image_prompt || ""}
-                      onChange={(e) => handleStepUpdate(idx, 'image_prompt', e.target.value)}
-                      className="flex-1 bg-black/5 rounded-lg px-3 py-1 text-[10px] font-mono outline-none"
-                      placeholder="视觉提示词"
+
+                {/* Conditional Step Image */}
+                {showVisual && (
+                  <div className="w-full max-w-md">
+                    <ImageSlot 
+                      url={step.image_url}
+                      prompt={step.image_prompt}
+                      onPromptChange={(val) => handleStepUpdate(idx, 'image_prompt', val)}
+                      onGenerate={() => onGenerateImage('steps', idx, step.image_prompt)}
+                      onRemove={() => onRemoveImage('steps', idx)}
+                      onUpload={(data) => onUploadImage('steps', idx, data)}
+                      isPreviewMode={isPreviewMode}
+                      theme={theme}
+                      className="aspect-video"
+                      recommendSize="16:9 (1200x675px)"
                     />
                   </div>
                 )}
               </div>
+            </div>
+          );
+        })}
+      </div>
 
+      {/* Steps Conclusion Modules */}
+      <div className="mt-20 space-y-8">
+        {content.soul_warning && (
+          <div className={`${theme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-10 border ${theme.cardBorder} shadow-xl flex items-start gap-6`}>
+            <div className={`p-4 bg-white/40 rounded-2xl ${theme.accentText} shrink-0`}>
+              <AlertCircle className="w-6 h-6" />
+            </div>
+            <div className="space-y-2">
+              <h4 className={`font-black uppercase tracking-widest text-[10px] ${theme.accentText}`}>碎碎念 / Note</h4>
+              <p className={`text-base leading-relaxed ${theme.bodyText} font-medium italic opacity-70`}>
+                {content.soul_warning}
+              </p>
             </div>
           </div>
-        </div>
-      ))}
+        )}
+
+      </div>
     </div>
   );
 };
