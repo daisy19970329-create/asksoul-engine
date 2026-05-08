@@ -366,7 +366,7 @@ Use double newlines for paragraph spacing in descriptions.`;
  <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-2xl p-6 shadow-2xl border ${activeTheme.cardBorder}`}>
  <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
  <div className="md:col-span-1">
- <label className="text-xs font-bold opacity-70 mb-1 block">主题 (Topic)</label>
+ <label className="text-xs font-bold opacity-70 mb-1 block">主题 (Topic)-version1</label>
  <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="输入主题..." className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`} />
  </div>
  <div>
