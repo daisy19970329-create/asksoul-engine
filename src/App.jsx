@@ -78,16 +78,16 @@ const PLACEHOLDER_DATA = {
     intro: "在这个快节奏的时代，我们比任何时候都更需要寻找内心的宁静。",
     type: "Ranking",
     rankings: [
-      { rank:1, sign: "清晨冥想", tag: "深度静心", desc: "在日出时分静坐10分钟，观察呼吸的流动。", addictiveFactor: "静谧的力量" },
-      { rank:2, sign: "午后阅读", tag: "精神食粮", desc: "放下手机，翻开一本纸质书。", addictiveFactor: "跨越时空的共鸣" },
-      { rank:3, sign: "赤脚踏青", tag: "大地连接", desc: "脱掉鞋袜，让脚掌直接触碰泥土或草地。", addictiveFactor: "原始的自由感" },
-      { rank:4, sign: "整理空间", tag: "断舍离", desc: "清空一个抽屉或整理一片角落。", addictiveFactor: "掌控感的回归" },
-      { rank:5, sign: "慢煮时光", tag: "烟火气", desc: "为自己煮一壶茶或煲一锅汤。", addictiveFactor: "生活的质感" },
-      { rank:6, sign: "晚间散步", tag: "慢节奏", desc: "在落日余晖中随意行走。", addictiveFactor: "放松身心" },
-      { rank:7, sign: "书写日记", tag: "自我对话", desc: "记录当下的感受与思考。", addictiveFactor: "内心的宁静" },
-      { rank:8, sign: "深度睡眠", tag: "修复力", desc: "关掉灯光，彻底放松。", addictiveFactor: "能量补给" }
+      { rank: 1, sign: "清晨冥想", tag: "深度静心", desc: "在日出时分静坐10分钟，观察呼吸的流动。", addictiveFactor: "静谧的力量" },
+      { rank: 2, sign: "午后阅读", tag: "精神食粮", desc: "放下手机，翻开一本纸质书。", addictiveFactor: "跨越时空的共鸣" },
+      { rank: 3, sign: "赤脚踏青", tag: "大地连接", desc: "脱掉鞋袜，让脚掌直接触碰泥土或草地。", addictiveFactor: "原始的自由感" },
+      { rank: 4, sign: "整理空间", tag: "断舍离", desc: "清空一个抽屉或整理一片角落。", addictiveFactor: "掌控感的回归" },
+      { rank: 5, sign: "慢煮时光", tag: "烟火气", desc: "为自己煮一壶茶或煲一锅汤。", addictiveFactor: "生活的质感" },
+      { rank: 6, sign: "晚间散步", tag: "慢节奏", desc: "在落日余晖中随意行走。", addictiveFactor: "放松身心" },
+      { rank: 7, sign: "书写日记", tag: "自我对话", desc: "记录当下的感受与思考。", addictiveFactor: "内心的宁静" },
+      { rank: 8, sign: "深度睡眠", tag: "修复力", desc: "关掉灯光，彻底放松。", addictiveFactor: "能量补给" }
     ],
-    recommendations: [{ id:1, title: "如何建立专属的早起仪式感", hot: true }],
+    recommendations: [{ id: 1, title: "如何建立专属的早起仪式感", hot: true }],
     quizzes: [{ title: "测一测你属于哪种疗愈型人格", color: "bg-pink-100 text-pink-700" }],
     quote: "每个人都是一颗独立的星球，在寒冷的宇宙里，努力散发着微弱却坚定的光。",
     soul_warning: "记得在照顾所有人之前，先把自己照顾好。你的情绪价值不应该建立在自我损耗之上。"
@@ -106,7 +106,7 @@ const PLACEHOLDER_DATA = {
       { title: "平静湖面", interpretation: "你内心渴望长久的安宁。", tag: "安宁", warning: "小心停滞不前" },
       { title: "繁华闹市", interpretation: "你对社交和连接有强烈需求。", tag: "连接", warning: "别迷失在人群中" }
     ],
-    recommendations: [{ id:1, title: "你最近的情绪，是在自救还是自耗？", hot: true }],
+    recommendations: [{ id: 1, title: "你最近的情绪，是在自救还是自耗？", hot: true }],
     quizzes: [{ title: "测一测你潜意识最深的执念", color: "bg-pink-100 text-pink-700" }],
     quote: "眼睛是灵魂的窗户，而潜意识则是推开窗户后，那个更深邃的房间。",
     soul_warning: "看清真相往往伴随着阵痛，但这正是成长的开始。不要害怕面对那个‘不完美’的自己。"
@@ -121,7 +121,7 @@ const PLACEHOLDER_DATA = {
       { subtitle: "审美范式的转移", content: "新的艺术风格正在诞生。", image_prompt: "" },
       { subtitle: "艺术的未来", content: "人机协作将成为主流。", image_prompt: "" }
     ],
-    recommendations: [{ id:1, title: "当技术成为艺术家的第二大脑", hot: true }],
+    recommendations: [{ id: 1, title: "当技术成为艺术家的第二大脑", hot: true }],
     quizzes: [{ title: "测一测你的创作人格", color: "bg-pink-100 text-pink-700" }],
     quote: "技术永远只是工具，唯有灵魂深处的颤动，才能赋予艺术真正的生命。",
     soul_warning: "在追求效率的时代，请警惕‘流水线式’的审美。不要让算法完全取代你独特的直觉。"
@@ -137,7 +137,7 @@ const PLACEHOLDER_DATA = {
       { title: "时间有预判", desc: "合理安排工作优先级。", image_prompt: "" },
       { title: "专业有沉淀", desc: "总结经验，不断复盘。", image_prompt: "" }
     ],
-    recommendations: [{ id:1, title: "为什么靠谱的人总能被看见", hot: true }],
+    recommendations: [{ id: 1, title: "为什么靠谱的人总能被看见", hot: true }],
     quizzes: [{ title: "测测你的职场信任值", color: "bg-pink-100 text-pink-700" }],
     quote: "职场是一场马拉松，暂时的领先并不代表终点，唯有始终如一的踏实才是护身符。",
     soul_warning: "过度追求‘专业感’可能会让你显得冷漠。在逻辑闭环之外，请保留一份属于人的温度。"
@@ -148,7 +148,7 @@ const PLACEHOLDER_DATA = {
     type: "Compare",
     optionA: { title: "极简主义", desc: "剥离多余，留下核心。", tag: "Less is More", image_prompt: "Minimalism" },
     optionB: { title: "极繁主义", desc: "拥抱一切美好。", tag: "More is More", image_prompt: "Maximalism" },
-    recommendations: [{ id:1, title: "你真正需要的，不一定更多", hot: true }],
+    recommendations: [{ id: 1, title: "你真正需要的，不一定更多", hot: true }],
     quizzes: [{ title: "测一测你的生活方式", color: "bg-pink-100 text-pink-700" }],
     quote: "繁花与荒野，都有它们存在的意义。关键不在于你拥有多少，而在于你是否在其中感到自由。",
     soul_warning: "所有的‘主义’都只是路径，而不是终点。不要为了合群而强行改变自己的生存逻辑。"
@@ -167,7 +167,7 @@ const PLACEHOLDER_DATA = {
       { title: "急救包", desc: "安全第一。" },
       { title: "好心情", desc: "这是最重要的。" }
     ],
-    recommendations: [{ id:1, title: "旅行前最容易忽略的事", hot: true }],
+    recommendations: [{ id: 1, title: "旅行前最容易忽略的事", hot: true }],
     quizzes: [{ title: "测一测你的旅行人格", color: "bg-pink-100 text-pink-700" }],
     quote: "出发的意义不在于抵达，而在于你决定推开门的那一刻。",
     soul_warning: "清单可以穷尽物资，但无法穷尽意外。保持随遇而安的心态，才是旅途中最坚硬的铠甲。",
@@ -176,16 +176,16 @@ const PLACEHOLDER_DATA = {
 };
 
 const App = () => {
- const [imageUrl, setImageUrl] = useState(null);
- const [isGenerating, setIsGenerating] = useState(false);
- const [isGeneratingContent, setIsGeneratingContent] = useState(false);
- const [isLiked, setIsLiked] = useState(false);
- const [isCopied, setIsCopied] = useState(false);
- const [isPreviewMode, setIsPreviewMode] = useState(false);
- const [topic, setTopic] = useState("");
- const [templateType, setTemplateType] = useState("Ranking");
- const [styleType, setStyleType] = useState("Snow Alabaster");
- const [language, setLanguage] = useState("繁体中文");
+  const [imageUrl, setImageUrl] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingContent, setIsGeneratingContent] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [topic, setTopic] = useState("");
+  const [templateType, setTemplateType] = useState("Ranking");
+  const [styleType, setStyleType] = useState("Snow Alabaster");
+  const [language, setLanguage] = useState("繁体中文");
   const [articleContent, setArticleContent] = useState(PLACEHOLDER_DATA["Ranking"]);
 
   const handleTemplateChange = (type) => {
@@ -206,7 +206,7 @@ const App = () => {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
     let schemaPrompt = JSON.stringify(PLACEHOLDER_DATA[templateType]);
-    
+
     let countConstraints = "";
     if (templateType === "Ranking") countConstraints = "Generate EXACTLY 8 items. Each item's description must be 120-150 words for deep emotional insight.";
     if (templateType === "ImageExplainer") countConstraints = "Generate EXACTLY 4 items. Each interpretation must be 100-150 words to explain the hidden emotion.";
@@ -248,35 +248,35 @@ Output JSON strictly matching this schema: ${schemaPrompt}.
 Include 'recommendations', 'quizzes' AND an 'seo' object at the top level. 
 Use double newlines for paragraph spacing in descriptions.`;
 
- try {
-  const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
- });
- const data = await resp.json();
- if (data.error) throw new Error(data.error.message);
- const raw = data.candidates[0].content.parts[0].text;
- const cleaned = raw.replace(/```json|```/g, '').trim();
- const parsed = JSON.parse(cleaned);
-  
-  // Ensure SEO data is present even if AI missed it
-  if (!parsed.seo) {
-    parsed.seo = {
-      slug: topic.toLowerCase().replace(/\s+/g, '-'),
-      title: parsed.title || topic,
-      description: parsed.intro || "",
-      keywords: topic
-    };
-  }
-  
-  setArticleContent({ ...parsed, type: templateType });
- } catch (err) {
- alert("Generation failed: " + err.message);
- } finally {
- setIsGeneratingContent(false);
- }
- };
+    try {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      const data = await resp.json();
+      if (data.error) throw new Error(data.error.message);
+      const raw = data.candidates[0].content.parts[0].text;
+      const cleaned = raw.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+
+      // Ensure SEO data is present even if AI missed it. gggggggg
+      if (!parsed.seo) {
+        parsed.seo = {
+          slug: topic.toLowerCase().replace(/\s+/g, '-'),
+          title: parsed.title || topic,
+          description: parsed.intro || "",
+          keywords: topic
+        };
+      }
+
+      setArticleContent({ ...parsed, type: templateType });
+    } catch (err) {
+      alert("Generation failed: " + err.message);
+    } finally {
+      setIsGeneratingContent(false);
+    }
+  };
 
   const generateImage = async () => {
     if (!topic) return;
@@ -342,221 +342,221 @@ Use double newlines for paragraph spacing in descriptions.`;
 
   return (
     <div className={`min-h-screen ${activeTheme.bg} ${activeTheme.text} transition-all duration-1000 p-4 md:p-8 relative overflow-hidden`}>
- <div className="noise-overlay" />
- <div className="max-w-6xl mx-auto space-y-8 relative z-10">
- 
- {/* Floating Toolbar */}
- <div className={`sticky top-4 z-50 flex items-center justify-between ${activeTheme.igGradient} rounded-full px-6 py-3 shadow-2xl border ${activeTheme.cardBorder} backdrop-blur-xl bg-opacity-90`}>
- <div className="flex items-center gap-3">
- <span className="font-serif-display text-xl italic tracking-wider">AskSoul</span>
- <div className={`w-px h-4 ${activeTheme.accentBg} opacity-50`}></div>
- <span className="font-bold tracking-widest uppercase text-[10px] opacity-60">Engine</span>
- </div>
- <div className="flex items-center gap-4">
- <div className="flex bg-black/5 rounded-full p-1">
- <button onClick={() => setIsPreviewMode(false)} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${!isPreviewMode ? activeTheme.primaryBtn : 'text-gray-500'}`}>Edit</button>
- <button onClick={() => setIsPreviewMode(true)} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${isPreviewMode ? activeTheme.primaryBtn : 'text-gray-500'}`}>Preview</button>
- </div>
- <button className={`px-6 py-2 rounded-full ${activeTheme.primaryBtn} text-sm font-black shadow-lg flex items-center gap-2`}><Send className="w-4 h-4" /> Publish</button>
- </div>
- </div>
+      <div className="noise-overlay" />
+      <div className="max-w-6xl mx-auto space-y-8 relative z-10">
 
- {/* Editor Controls */}
- {!isPreviewMode && (
- <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-2xl p-6 shadow-2xl border ${activeTheme.cardBorder}`}>
- <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
- <div className="md:col-span-1">
- <label className="text-xs font-bold opacity-70 mb-1 block">主题 (Topic)-version1</label>
- <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="输入主题..." className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`} />
- </div>
- <div>
- <label className="text-xs font-bold opacity-70 mb-1 block">模板</label>
- <select value={templateType} onChange={e => handleTemplateChange(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
- <option value="Ranking">排行榜 (Ranking)</option>
- <option value="ImageExplainer">图片解读 (ImageExplainer)</option>
- <option value="LongForm">长文 (LongForm)</option>
- <option value="StepsGuide">步骤指南 (StepsGuide)</option>
- <option value="Compare">对比 (Compare)</option>
- <option value="Checklist">清单 (Checklist)</option>
- </select>
- </div>
- <div>
- <label className="text-xs font-bold opacity-70 mb-1 block">风格</label>
- <select value={styleType} onChange={e => setStyleType(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
- {Object.keys(THEME_MAP).map(key => <option key={key} value={key}>{key}</option>)}
- </select>
- </div>
- <div>
- <label className="text-xs font-bold opacity-70 mb-1 block">语言</label>
- <select value={language} onChange={e => setLanguage(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
- <option value="繁体中文">繁体中文</option>
- <option value="简体中文">简体中文</option>
- <option value="English">English</option>
- <option value="日本語">日本語</option>
- <option value="Français">Français</option>
- <option value="Deutsch">Deutsch</option>
- </select>
- </div>
- <div className="flex items-end">
- <button onClick={generateArticle} disabled={isGeneratingContent || !topic} className={`w-full py-3 ${activeTheme.primaryBtn} rounded-xl font-black disabled:opacity-50 flex items-center justify-center gap-2`}>
- {isGeneratingContent ? <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div> : <Sparkles className="w-4 h-4" />} 一键生成
- </button>
- </div>
- </div>
- </div>
- )}
-
- {/* Main Content Layout */}
- <div className="flex flex-col md:flex-row gap-12 items-start relative">
- <div className="flex-1 space-y-12 min-w-0">
- {/* Cover Section */}
- <div className="space-y-8">
- <header className="text-center space-y-6">
- <div className={`inline-flex items-center px-4 py-1.5 rounded-full ${activeTheme.accentBg} ${activeTheme.accentText} text-sm font-semibold border ${activeTheme.cardBorder} shadow-sm`}>
- <Sun className="w-4 h-4 mr-2" /> AskSoul 专栏
- </div>
-    {isPreviewMode ? (
-      <h1 className={`text-4xl md:text-6xl ${activeTheme.titleStyle} leading-tight drop-shadow-sm px-4 max-w-4xl mx-auto`}>{articleContent.title}</h1>
-    ) : (
-      <textarea
-        value={articleContent.title}
-        onChange={(e) => handleContentUpdate({ ...articleContent, title: e.target.value })}
-        className={`w-full text-4xl md:text-6xl ${activeTheme.titleStyle} leading-tight text-center bg-transparent border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none resize-none overflow-hidden`}
-        rows={2}
-      />
-    )}
- </header>
-
-  <div className="w-full">
-    <ImageSlot 
-      url={imageUrl}
-      prompt={topic}
-      onPromptChange={setTopic}
-      onGenerate={generateImage}
-      onRemove={() => setImageUrl("")}
-      onUpload={setImageUrl}
-      isPreviewMode={isPreviewMode}
-      theme={activeTheme}
-      className="aspect-[16/9]"
-      recommendSize="16:9 (1200x675px)"
-    />
-  </div>
- </div>
-
- {/* Article Content */}
- <div className={`rounded-[3rem] ${activeTheme.igGradient} backdrop-blur-3xl shadow-2xl border ${activeTheme.cardBorder} premium-card-shadow overflow-hidden`}>
- <div className="p-8 md:p-16 space-y-20 relative">
- <div className="max-w-3xl mx-auto">
-      {isPreviewMode ? (
-        <p className={`text-xl md:text-2xl leading-[1.8] font-serif font-medium pl-8 border-l-4 ${activeTheme.accentText} border-opacity-30 opacity-90 italic whitespace-pre-wrap`}>{articleContent.intro}</p>
-      ) : (
-        <div className={`pl-8 border-l-4 ${activeTheme.accentText} border-opacity-30`}>
-          <textarea
-            value={articleContent.intro}
-            onChange={(e) => handleContentUpdate({ ...articleContent, intro: e.target.value })}
-            className={`w-full text-xl md:text-2xl leading-[1.8] font-serif font-medium bg-transparent border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none resize-none italic opacity-90`}
-            rows={4}
-          />
+        {/* Floating Toolbar */}
+        <div className={`sticky top-4 z-50 flex items-center justify-between ${activeTheme.igGradient} rounded-full px-6 py-3 shadow-2xl border ${activeTheme.cardBorder} backdrop-blur-xl bg-opacity-90`}>
+          <div className="flex items-center gap-3">
+            <span className="font-serif-display text-xl italic tracking-wider">AskSoul</span>
+            <div className={`w-px h-4 ${activeTheme.accentBg} opacity-50`}></div>
+            <span className="font-bold tracking-widest uppercase text-[10px] opacity-60">Engine</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex bg-black/5 rounded-full p-1">
+              <button onClick={() => setIsPreviewMode(false)} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${!isPreviewMode ? activeTheme.primaryBtn : 'text-gray-500'}`}>Edit</button>
+              <button onClick={() => setIsPreviewMode(true)} className={`px-5 py-1.5 rounded-full text-sm font-bold transition-all ${isPreviewMode ? activeTheme.primaryBtn : 'text-gray-500'}`}>Preview</button>
+            </div>
+            <button className={`px-6 py-2 rounded-full ${activeTheme.primaryBtn} text-sm font-black shadow-lg flex items-center gap-2`}><Send className="w-4 h-4" /> Publish</button>
+          </div>
         </div>
-      )}
- </div>
 
- {/* Dynamic Template Selection */}
-  {articleContent.type === "Ranking" && <RankingTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
-  {articleContent.type === "ImageExplainer" && <ImageExplainerTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
-  {articleContent.type === "LongForm" && <LongFormTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
-  {articleContent.type === "StepsGuide" && <StepsGuideTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
-  {articleContent.type === "Compare" && <CompareTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
-  {articleContent.type === "Checklist" && <ChecklistTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} />}
- 
-  {/* Share Section */}
-  <div className="flex justify-center pt-12 pb-4">
-    <button 
-      onClick={() => {
-        navigator.clipboard.writeText(window.location.href);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-      }}
-      className={`group relative flex items-center gap-3 px-8 py-4 ${activeTheme.igGradient} backdrop-blur-xl border ${activeTheme.cardBorder} rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95`}
-    >
-      <div className={`p-2 bg-white/40 rounded-xl ${activeTheme.accentText}`}>
-        {isCopied ? <Check className="w-5 h-5" /> : <Share2 className="w-5 h-5" />}
+        {/* Editor Controls */}
+        {!isPreviewMode && (
+          <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-2xl p-6 shadow-2xl border ${activeTheme.cardBorder}`}>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+              <div className="md:col-span-1">
+                <label className="text-xs font-bold opacity-70 mb-1 block">主题 (Topic)-version1</label>
+                <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="输入主题..." className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`} />
+              </div>
+              <div>
+                <label className="text-xs font-bold opacity-70 mb-1 block">模板</label>
+                <select value={templateType} onChange={e => handleTemplateChange(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
+                  <option value="Ranking">排行榜 (Ranking)</option>
+                  <option value="ImageExplainer">图片解读 (ImageExplainer)</option>
+                  <option value="LongForm">长文 (LongForm)</option>
+                  <option value="StepsGuide">步骤指南 (StepsGuide)</option>
+                  <option value="Compare">对比 (Compare)</option>
+                  <option value="Checklist">清单 (Checklist)</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-bold opacity-70 mb-1 block">风格</label>
+                <select value={styleType} onChange={e => setStyleType(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
+                  {Object.keys(THEME_MAP).map(key => <option key={key} value={key}>{key}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-bold opacity-70 mb-1 block">语言</label>
+                <select value={language} onChange={e => setLanguage(e.target.value)} className={`w-full px-4 py-3 ${activeTheme.highlight} border ${activeTheme.cardBorder} rounded-xl outline-none`}>
+                  <option value="繁体中文">繁体中文</option>
+                  <option value="简体中文">简体中文</option>
+                  <option value="English">English</option>
+                  <option value="日本語">日本語</option>
+                  <option value="Français">Français</option>
+                  <option value="Deutsch">Deutsch</option>
+                </select>
+              </div>
+              <div className="flex items-end">
+                <button onClick={generateArticle} disabled={isGeneratingContent || !topic} className={`w-full py-3 ${activeTheme.primaryBtn} rounded-xl font-black disabled:opacity-50 flex items-center justify-center gap-2`}>
+                  {isGeneratingContent ? <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div> : <Sparkles className="w-4 h-4" />} 一键生成
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content Layout */}
+        <div className="flex flex-col md:flex-row gap-12 items-start relative">
+          <div className="flex-1 space-y-12 min-w-0">
+            {/* Cover Section */}
+            <div className="space-y-8">
+              <header className="text-center space-y-6">
+                <div className={`inline-flex items-center px-4 py-1.5 rounded-full ${activeTheme.accentBg} ${activeTheme.accentText} text-sm font-semibold border ${activeTheme.cardBorder} shadow-sm`}>
+                  <Sun className="w-4 h-4 mr-2" /> AskSoul 专栏
+                </div>
+                {isPreviewMode ? (
+                  <h1 className={`text-4xl md:text-6xl ${activeTheme.titleStyle} leading-tight drop-shadow-sm px-4 max-w-4xl mx-auto`}>{articleContent.title}</h1>
+                ) : (
+                  <textarea
+                    value={articleContent.title}
+                    onChange={(e) => handleContentUpdate({ ...articleContent, title: e.target.value })}
+                    className={`w-full text-4xl md:text-6xl ${activeTheme.titleStyle} leading-tight text-center bg-transparent border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none resize-none overflow-hidden`}
+                    rows={2}
+                  />
+                )}
+              </header>
+
+              <div className="w-full">
+                <ImageSlot
+                  url={imageUrl}
+                  prompt={topic}
+                  onPromptChange={setTopic}
+                  onGenerate={generateImage}
+                  onRemove={() => setImageUrl("")}
+                  onUpload={setImageUrl}
+                  isPreviewMode={isPreviewMode}
+                  theme={activeTheme}
+                  className="aspect-[16/9]"
+                  recommendSize="16:9 (1200x675px)"
+                />
+              </div>
+            </div>
+
+            {/* Article Content */}
+            <div className={`rounded-[3rem] ${activeTheme.igGradient} backdrop-blur-3xl shadow-2xl border ${activeTheme.cardBorder} premium-card-shadow overflow-hidden`}>
+              <div className="p-8 md:p-16 space-y-20 relative">
+                <div className="max-w-3xl mx-auto">
+                  {isPreviewMode ? (
+                    <p className={`text-xl md:text-2xl leading-[1.8] font-serif font-medium pl-8 border-l-4 ${activeTheme.accentText} border-opacity-30 opacity-90 italic whitespace-pre-wrap`}>{articleContent.intro}</p>
+                  ) : (
+                    <div className={`pl-8 border-l-4 ${activeTheme.accentText} border-opacity-30`}>
+                      <textarea
+                        value={articleContent.intro}
+                        onChange={(e) => handleContentUpdate({ ...articleContent, intro: e.target.value })}
+                        className={`w-full text-xl md:text-2xl leading-[1.8] font-serif font-medium bg-transparent border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none resize-none italic opacity-90`}
+                        rows={4}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Dynamic Template Selection */}
+                {articleContent.type === "Ranking" && <RankingTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
+                {articleContent.type === "ImageExplainer" && <ImageExplainerTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
+                {articleContent.type === "LongForm" && <LongFormTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
+                {articleContent.type === "StepsGuide" && <StepsGuideTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
+                {articleContent.type === "Compare" && <CompareTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} onGenerateImage={generateItemImage} onRemoveImage={removeItemImage} onUploadImage={uploadItemImage} />}
+                {articleContent.type === "Checklist" && <ChecklistTemplate content={articleContent} theme={activeTheme} onUpdate={handleContentUpdate} isPreviewMode={isPreviewMode} />}
+
+                {/* Share Section */}
+                <div className="flex justify-center pt-12 pb-4">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.href);
+                      setIsCopied(true);
+                      setTimeout(() => setIsCopied(false), 2000);
+                    }}
+                    className={`group relative flex items-center gap-3 px-8 py-4 ${activeTheme.igGradient} backdrop-blur-xl border ${activeTheme.cardBorder} rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95`}
+                  >
+                    <div className={`p-2 bg-white/40 rounded-xl ${activeTheme.accentText}`}>
+                      {isCopied ? <Check className="w-5 h-5" /> : <Share2 className="w-5 h-5" />}
+                    </div>
+                    <div className="text-left">
+                      <p className={`text-[10px] font-black uppercase tracking-widest ${activeTheme.accentText} opacity-60 mb-0.5`}>
+                        {isCopied ? "Link Saved" : "Invite Friends"}
+                      </p>
+                      <p className={`font-black text-lg ${activeTheme.titleText}`}>
+                        {isCopied ? "已成功复制链接" : "分享给你的灵魂伴侣"}
+                      </p>
+                    </div>
+
+                    {/* Visual Feedback Glow */}
+                    {isCopied && (
+                      <div className="absolute inset-0 rounded-2xl ring-4 ring-green-400/30 animate-pulse pointer-events-none"></div>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Article Footer */}
+              <div className="px-10 py-12 border-t border-gray-100 border-opacity-30 flex flex-col items-center gap-8">
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <div className={`w-12 h-1.5 ${activeTheme.accentBg} rounded-full opacity-20`}></div>
+                  <p className={`text-[10px] font-black tracking-[0.5em] uppercase ${activeTheme.accentText} opacity-40 font-serif-display italic`}>AskSoul.me</p>
+                </div>
+                <div className="flex items-center gap-6">
+                  <button onClick={() => setIsLiked(!isLiked)} className={`p-5 rounded-full ${isLiked ? 'bg-rose-500 text-white' : activeTheme.accentBg + ' ' + activeTheme.accentText} shadow-xl border border-white/50 transition-all`}>
+                    <Heart className={`w-6 h-6 ${isLiked ? 'fill-current' : ''}`} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="w-full md:w-[360px] flex-shrink-0 space-y-8 md:sticky md:top-24">
+            {!isPreviewMode && articleContent.seo && (
+              <SEOMetadataPanel
+                seo={articleContent.seo}
+                onUpdate={(newSeo) => setArticleContent({ ...articleContent, seo: newSeo })}
+                theme={activeTheme}
+              />
+            )}
+
+            <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-7 border ${activeTheme.cardBorder} shadow-xl transition-all duration-500`}>
+              <div className="flex items-center gap-2 mb-6">
+                <div className={`p-2 ${activeTheme.accentBg} rounded-xl ${activeTheme.accentText}`}><BookOpen className="w-5 h-5" /></div>
+                <h3 className="font-black">热门推荐</h3>
+              </div>
+              <div className="space-y-6">
+                {(articleContent.recommendations || []).map((item, idx) => (
+                  <div key={idx} className={`group cursor-pointer border-b ${activeTheme.cardBorder} pb-4 last:border-0 last:pb-0`}>
+                    <p className="text-sm font-bold leading-relaxed">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-7 border ${activeTheme.cardBorder} shadow-xl transition-all duration-500`}>
+              <div className="flex items-center gap-2 mb-6">
+                <div className={`p-2 ${activeTheme.accentBg} rounded-xl ${activeTheme.accentText}`}><MessageCircle className="w-5 h-5" /></div>
+                <h3 className="font-black">心灵测验</h3>
+              </div>
+              <div className="space-y-4">
+                {(articleContent.quizzes || []).map((quiz, idx) => (
+                  <div key={idx} className={`${quiz.color || 'bg-blue-100 text-blue-700'} p-4 rounded-2xl flex items-center justify-between cursor-pointer hover:scale-105 transition-all`}>
+                    <span className="font-bold text-sm">{quiz.title}</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="text-left">
-        <p className={`text-[10px] font-black uppercase tracking-widest ${activeTheme.accentText} opacity-60 mb-0.5`}>
-          {isCopied ? "Link Saved" : "Invite Friends"}
-        </p>
-        <p className={`font-black text-lg ${activeTheme.titleText}`}>
-          {isCopied ? "已成功复制链接" : "分享给你的灵魂伴侣"}
-        </p>
-      </div>
-      
-      {/* Visual Feedback Glow */}
-      {isCopied && (
-        <div className="absolute inset-0 rounded-2xl ring-4 ring-green-400/30 animate-pulse pointer-events-none"></div>
-      )}
-    </button>
-  </div>
- </div>
-
- {/* Article Footer */}
- <div className="px-10 py-12 border-t border-gray-100 border-opacity-30 flex flex-col items-center gap-8">
- <div className="flex flex-col items-center gap-3 text-center">
- <div className={`w-12 h-1.5 ${activeTheme.accentBg} rounded-full opacity-20`}></div>
- <p className={`text-[10px] font-black tracking-[0.5em] uppercase ${activeTheme.accentText} opacity-40 font-serif-display italic`}>AskSoul.me</p>
- </div>
- <div className="flex items-center gap-6">
- <button onClick={() => setIsLiked(!isLiked)} className={`p-5 rounded-full ${isLiked ? 'bg-rose-500 text-white' : activeTheme.accentBg + ' ' + activeTheme.accentText} shadow-xl border border-white/50 transition-all`}>
- <Heart className={`w-6 h-6 ${isLiked ? 'fill-current' : ''}`} />
- </button>
- </div>
- </div>
- </div>
- </div>
-
- {/* Right Sidebar */}
- <div className="w-full md:w-[360px] flex-shrink-0 space-y-8 md:sticky md:top-24">
-   {!isPreviewMode && articleContent.seo && (
-     <SEOMetadataPanel 
-       seo={articleContent.seo} 
-       onUpdate={(newSeo) => setArticleContent({ ...articleContent, seo: newSeo })}
-       theme={activeTheme}
-     />
-   )}
-
- <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-7 border ${activeTheme.cardBorder} shadow-xl transition-all duration-500`}>
- <div className="flex items-center gap-2 mb-6">
- <div className={`p-2 ${activeTheme.accentBg} rounded-xl ${activeTheme.accentText}`}><BookOpen className="w-5 h-5" /></div>
- <h3 className="font-black">热门推荐</h3>
- </div>
- <div className="space-y-6">
- {(articleContent.recommendations || []).map((item, idx) => (
- <div key={idx} className={`group cursor-pointer border-b ${activeTheme.cardBorder} pb-4 last:border-0 last:pb-0`}>
- <p className="text-sm font-bold leading-relaxed">{item.title}</p>
- </div>
- ))}
- </div>
- </div>
-
- <div className={`${activeTheme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-7 border ${activeTheme.cardBorder} shadow-xl transition-all duration-500`}>
- <div className="flex items-center gap-2 mb-6">
- <div className={`p-2 ${activeTheme.accentBg} rounded-xl ${activeTheme.accentText}`}><MessageCircle className="w-5 h-5" /></div>
- <h3 className="font-black">心灵测验</h3>
- </div>
- <div className="space-y-4">
- {(articleContent.quizzes || []).map((quiz, idx) => (
- <div key={idx} className={`${quiz.color || 'bg-blue-100 text-blue-700'} p-4 rounded-2xl flex items-center justify-between cursor-pointer hover:scale-105 transition-all`}>
- <span className="font-bold text-sm">{quiz.title}</span>
- <ChevronRight className="w-4 h-4" />
- </div>
- ))}
- </div>
- </div>
- </div>
- </div>
- </div>
- </div>
- );
+    </div>
+  );
 };
 
 export default App;
