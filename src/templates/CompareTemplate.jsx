@@ -2,86 +2,68 @@ import { AlertCircle, Quote } from 'lucide-react';
 import ImageSlot from '../components/ImageSlot';
 
 const CompareTemplate = ({ content, theme, onUpdate, isPreviewMode, onGenerateImage, onRemoveImage, onUploadImage }) => {
-  const options = [
-    { key: 'optionA', label: 'Side A' },
-    { key: 'optionB', label: 'Side B' }
-  ];
+  const handleItemUpdate = (index, field, value) => {
+    const newItems = [...(content.items || [{}, {}])];
+    newItems[index] = { ...newItems[index], [field]: value };
+    onUpdate({ ...content, items: newItems });
+  };
 
   return (
-    <div className="relative z-10 w-full max-w-2xl mx-auto py-12">
-      {/* VS Badge */}
-      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full ${theme.accentBg} ${theme.accentText} border-4 border-white shadow-2xl flex items-center justify-center text-3xl font-black z-30 transform rotate-12 group-hover:scale-110 transition-transform`}>
-        VS
-      </div>
+    <div className="relative z-10 w-full max-w-4xl mx-auto py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative">
+        {/* VS Badge */}
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full ${theme.accentBg} ${theme.accentText} border-8 border-white shadow-2xl flex items-center justify-center text-3xl font-black z-30 transform rotate-12 hidden md:flex`}>
+          VS
+        </div>
 
-      <div className="space-y-12">
-        {options.map(({ key, label }, idx) => {
-          const data = content[key] || {};
+        {[0, 1].map((idx) => {
+          const item = (content.items || [])[idx] || {};
           return (
-            <div key={key} className={`relative overflow-hidden ${theme.igGradient} backdrop-blur-xl rounded-[3rem] p-10 md:p-14 border ${theme.cardBorder} shadow-xl hover:shadow-2xl transition-all group`}>
-              
+            <div key={item.id || idx} className={`relative overflow-hidden ${theme.igGradient} backdrop-blur-xl rounded-[3rem] p-10 border ${theme.cardBorder} shadow-xl hover:shadow-2xl transition-all group`}>
               <div className="space-y-8">
-                {/* Visual Section */}
-                <div className="w-full">
-                  <ImageSlot 
-                    url={data.image_url}
-                    prompt={data.image_prompt}
-                    onPromptChange={(val) => onUpdate({ ...content, [key]: { ...data, image_prompt: val } })}
-                    onGenerate={() => onGenerateImage(null, null, data.image_prompt, key)}
-                    onRemove={() => onRemoveImage(null, null, key)}
-                    onUpload={(data) => onUploadImage(null, null, data, key)}
-                    isPreviewMode={isPreviewMode}
-                    theme={theme}
-                    className="aspect-[16/9]"
-                    recommendSize="16:9 (1200x675px)"
-                  />
-                </div>
+                <ImageSlot 
+                  url={item.image_url}
+                  prompt={item.image_prompt}
+                  onPromptChange={(val) => handleItemUpdate(idx, 'image_prompt', val)}
+                  onGenerate={() => onGenerateImage(idx)}
+                  onRemove={() => onRemoveImage(idx)}
+                  onUpload={(data) => onUploadImage(idx, data)}
+                  isPreviewMode={isPreviewMode}
+                  theme={theme}
+                  className="aspect-video"
+                  recommendSize="16:9 (1200x675px)"
+                />
 
-                {/* Content Section */}
                 <div className="space-y-4 text-center">
                   <div className="flex justify-center">
-                    {isPreviewMode ? (
-                      <span className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black uppercase tracking-widest`}>
-                        {data.tag || 'PERSPECTIVE'}
-                      </span>
-                    ) : (
-                      <input
-                        value={data.tag || ""}
-                        onChange={(e) => onUpdate({ ...content, [key]: { ...data, tag: e.target.value } })}
-                        className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black uppercase tracking-widest outline-none w-32 text-center`}
-                        placeholder="标签"
-                      />
-                    )}
+                    <span className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black uppercase tracking-widest border ${theme.cardBorder}`}>
+                      {item.tag || 'OPTION'}
+                    </span>
                   </div>
 
                   {isPreviewMode ? (
-                    <h3 className={`text-3xl md:text-4xl font-black font-serif ${theme.titleText}`}>
-                      {data.title || "选项标题"}
-                    </h3>
+                    <h3 className={`text-3xl font-black ${theme.titleText}`}>{item.title}</h3>
                   ) : (
                     <input
-                      value={data.title || ""}
-                      onChange={(e) => onUpdate({ ...content, [key]: { ...data, title: e.target.value } })}
-                      className={`w-full bg-transparent text-3xl md:text-4xl font-black font-serif ${theme.titleText} border-b border-dashed border-gray-300 outline-none text-center`}
+                      value={item.title || ""}
+                      onChange={(e) => handleItemUpdate(idx, 'title', e.target.value)}
+                      className={`w-full bg-transparent text-3xl font-black text-center ${theme.titleText} border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none py-1`}
                       placeholder="标题"
                     />
                   )}
 
                   {isPreviewMode ? (
-                    <p className={`text-lg leading-relaxed opacity-80 ${theme.bodyText} font-medium max-w-lg mx-auto`}>
-                      {data.desc || "在这里输入对比描述文案..."}
-                    </p>
+                    <p className={`text-lg leading-relaxed ${theme.bodyText} opacity-80 font-medium`}>{item.desc}</p>
                   ) : (
                     <textarea
-                      value={data.desc || ""}
-                      onChange={(e) => onUpdate({ ...content, [key]: { ...data, desc: e.target.value } })}
-                      className={`w-full bg-transparent text-lg leading-relaxed opacity-80 ${theme.bodyText} font-medium outline-none resize-none min-h-[80px] text-center`}
+                      value={item.desc || ""}
+                      onChange={(e) => handleItemUpdate(idx, 'desc', e.target.value)}
+                      className={`w-full bg-transparent text-lg leading-relaxed ${theme.bodyText} opacity-80 font-medium outline-none resize-none min-h-30 text-center border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20`}
                       placeholder="对比描述..."
                     />
                   )}
                 </div>
               </div>
-
             </div>
           );
         })}
@@ -89,7 +71,6 @@ const CompareTemplate = ({ content, theme, onUpdate, isPreviewMode, onGenerateIm
 
       {/* Bridging Harmony Card */}
       <div className={`mt-16 ${theme.igGradient} backdrop-blur-3xl rounded-[3.5rem] p-12 border ${theme.cardBorder} shadow-2xl relative overflow-hidden group`}>
-        <div className="absolute -left-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1 space-y-4 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-3">

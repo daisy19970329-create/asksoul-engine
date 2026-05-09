@@ -1,116 +1,80 @@
-import React from 'react';
-import { MessageSquareQuote, AlertCircle, Quote } from 'lucide-react';
+import { AlertCircle, Quote } from 'lucide-react';
 import ImageSlot from '../components/ImageSlot';
 
-const WATERMARKS = [
-  "DEEP SOUL", "INNER PEACE", "TRUE SELF", "QUIET MIND", "PURE HEART", "ZEN MOMENT"
-];
-
 const ImageExplainerTemplate = ({ content, theme, onUpdate, isPreviewMode, onGenerateImage, onRemoveImage, onUploadImage }) => {
-  const handleItemUpdate = (index, field, value) => {
+  const handleItemUpdate = (index, field, value, isExtra = false) => {
     const newItems = [...(content.items || [])];
-    newItems[index] = { ...newItems[index], [field]: value };
+    if (isExtra) {
+      newItems[index] = { ...newItems[index], extra: { ...newItems[index].extra, [field]: value } };
+    } else {
+      newItems[index] = { ...newItems[index], [field]: value };
+    }
     onUpdate({ ...content, items: newItems });
   };
 
   return (
-    <div className="space-y-10 relative z-10 w-full">
-      {/* Main Single Image (首图) */}
-      {(!isPreviewMode || content.main?.image_url) && (
-        <div className={`p-4 md:p-6 rounded-[3rem] ${theme.cardBg} border ${theme.cardBorder} shadow-2xl`}>
-          <ImageSlot 
-            url={content.main?.image_url}
-            prompt={content.main?.image_prompt || "治愈系场景"}
-            onPromptChange={(val) => onUpdate({ ...content, main: { ...content.main, image_prompt: val } })}
-            onGenerate={() => onGenerateImage(null, null, content.main?.image_prompt || "治愈系场景", 'main')}
-            onRemove={() => onRemoveImage(null, null, 'main')}
-            onUpload={(data) => onUploadImage(null, null, data, 'main')}
-            isPreviewMode={isPreviewMode}
-            theme={theme}
-            className="aspect-video rounded-[2rem]"
-            recommendSize="16:9 (1200x675px)"
-          />
-        </div>
-      )}
-
-      <div className="flex flex-col gap-6">
-        {(content.items || []).map((item, idx) => {
-          const letter = String.fromCharCode(65 + idx); // A, B, C...
-          
-          return (
-            <div key={idx} className={`relative flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] shadow-xl transition-all hover:scale-[1.01] overflow-hidden group ${theme.igGradient} backdrop-blur-xl border border-white/60`}>
-
-              {/* Top Row: Badge & Tag */}
-              <div className="relative z-20 flex justify-between items-start mb-6">
-                <div className={`w-12 h-12 rounded-2xl bg-white/60 ${theme.text} flex items-center justify-center text-xl font-black shadow-lg border border-white/40 transform group-hover:rotate-6 transition-transform`}>
-                  {letter}
-                </div>
-                <div className="text-right bg-white/40 px-3 py-1 rounded-full border border-white/50">
-                  {isPreviewMode ? (
-                    <span className={`text-[10px] font-black tracking-widest uppercase ${theme.text} opacity-80`}>
-                      {item.tag || "INSIGHT"}
-                    </span>
-                  ) : (
-                    <input
-                      value={item.tag || ""}
-                      onChange={(e) => handleItemUpdate(idx, 'tag', e.target.value)}
-                      className={`bg-transparent text-[10px] font-black tracking-widest uppercase ${theme.text} opacity-80 outline-none w-20 text-right`}
-                      placeholder="TAG"
-                    />
-                  )}
-                </div>
+    <div className="space-y-16 relative z-10 w-full max-w-4xl mx-auto">
+      {/* Grid of Interpretations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {(content.items || []).map((item, idx) => (
+          <div key={item.id || idx} className={`${theme.igGradient} backdrop-blur-2xl rounded-[2.5rem] p-8 border ${theme.cardBorder} shadow-lg space-y-6 transition-all hover:scale-[1.02] overflow-hidden group`}>
+            <ImageSlot 
+              url={item.image_url}
+              prompt={item.image_prompt}
+              onPromptChange={(val) => handleItemUpdate(idx, 'image_prompt', val)}
+              onGenerate={() => onGenerateImage(idx)}
+              onRemove={() => onRemoveImage(idx)}
+              onUpload={(data) => onUploadImage(idx, data)}
+              isPreviewMode={isPreviewMode}
+              theme={theme}
+              className="aspect-video"
+              recommendSize="16:9 (1200x675px)"
+            />
+            
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className={`px-4 py-1 rounded-full ${theme.tagBg} ${theme.tagText} text-[10px] font-black uppercase tracking-widest border ${theme.cardBorder}`}>{item.tag || "INSIGHT"}</span>
               </div>
+              
+              {isPreviewMode ? (
+                <h3 className={`text-2xl font-black ${theme.titleText}`}>{item.title}</h3>
+              ) : (
+                <input
+                  value={item.title || ""}
+                  onChange={(e) => handleItemUpdate(idx, 'title', e.target.value)}
+                  className={`w-full bg-transparent text-2xl font-black ${theme.titleText} border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none py-1`}
+                  placeholder="标题"
+                />
+              )}
 
-              {/* Content: Title & Interpretation */}
-              <div className="relative z-20 flex-1 flex flex-col justify-center space-y-4 py-2">
+              {isPreviewMode ? (
+                <p className={`text-lg leading-relaxed ${theme.bodyText} opacity-80 font-medium`}>{item.desc}</p>
+              ) : (
+                <textarea
+                  value={item.desc || ""}
+                  onChange={(e) => handleItemUpdate(idx, 'desc', e.target.value)}
+                  className={`w-full bg-transparent text-lg leading-relaxed ${theme.bodyText} opacity-80 font-medium outline-none resize-none min-h-25 border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20`}
+                  placeholder="解读文案..."
+                />
+              )}
+
+              {/* Warning/Advice Badge */}
+              <div className={`p-4 ${theme.highlight} rounded-2xl border-l-4 border-rose-400 flex items-start gap-3`}>
+                <AlertCircle className="w-5 h-5 text-rose-500 mt-1 shrink-0" />
                 {isPreviewMode ? (
-                  <h3 className={`text-2xl font-black font-serif ${theme.titleText} leading-tight`}>
-                    {item.title || "场景标题"}
-                  </h3>
+                  <p className={`text-sm font-bold ${theme.titleText}`}>{item.extra?.warning || "建议备注..."}</p>
                 ) : (
                   <input
-                    value={item.title || ""}
-                    onChange={(e) => handleItemUpdate(idx, 'title', e.target.value)}
-                    className={`w-full bg-transparent text-2xl font-black font-serif ${theme.titleText} border-b border-dashed border-gray-400 outline-none`}
-                    placeholder="标题"
-                  />
-                )}
-                {isPreviewMode ? (
-                  <p className={`text-sm leading-relaxed ${theme.bodyText} font-medium`}>
-                    {item.interpretation || "深度剖析文字..."}
-                  </p>
-                ) : (
-                  <textarea
-                    value={item.interpretation || ""}
-                    onChange={(e) => handleItemUpdate(idx, 'interpretation', e.target.value)}
-                    className={`w-full bg-transparent text-sm leading-relaxed ${theme.bodyText} font-medium outline-none resize-none h-20`}
-                    placeholder="深度解读..."
+                    value={item.extra?.warning || ""}
+                    onChange={(e) => handleItemUpdate(idx, 'warning', e.target.value, true)}
+                    className={`w-full bg-transparent text-sm font-bold ${theme.titleText} border-2 border-dashed border-transparent hover:border-black/10 focus:border-black/20 outline-none`}
+                    placeholder="警告或建议"
                   />
                 )}
               </div>
-
-              {/* Bottom: Warning */}
-              <div className="relative z-20 mt-6">
-                <div className={`flex items-center gap-2 px-4 py-3 bg-white/50 rounded-2xl border border-white/60 shadow-sm`}>
-                  <AlertCircle className={`w-4 h-4 ${theme.accentText}`} />
-                  {isPreviewMode ? (
-                    <p className={`text-[10px] font-black ${theme.accentText} opacity-90 uppercase tracking-wider truncate`}>
-                      Warning: {item.warning || "小心解读。"}
-                    </p>
-                  ) : (
-                    <input
-                      value={item.warning || ""}
-                      onChange={(e) => handleItemUpdate(idx, 'warning', e.target.value)}
-                      className={`flex-1 bg-transparent text-[10px] font-black ${theme.accentText} opacity-90 outline-none uppercase`}
-                      placeholder="心灵警示"
-                    />
-                  )}
-                </div>
-              </div>
-
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
 
       {/* Final Soul Insight Card */}

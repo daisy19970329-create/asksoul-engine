@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Sparkles, Camera, Share2, Check, Heart, Sun, Send, BookOpen, ChevronRight, MessageCircle, Palette, Globe, Layers, Upload, Quote, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Sparkles, Sun, Send, Check, Share2, Heart, BookOpen, MessageCircle, ChevronRight } from 'lucide-react';
 import RankingTemplate from './templates/RankingTemplate';
 import ImageExplainerTemplate from './templates/ImageExplainerTemplate';
 import LongFormTemplate from './templates/LongFormTemplate';
@@ -9,83 +9,126 @@ import ChecklistTemplate from './templates/ChecklistTemplate';
 import SEOMetadataPanel from './components/SEOMetadataPanel';
 import ImageSlot from './components/ImageSlot';
 
-const THEME_MAP = {
+/**
+ * SEO & JSON-LD HELPERS
+ * Generates structured data for Google Rich Snippets
+ */
+const generateJsonLd = (content) => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": content.seo?.title || content.title,
+    "description": content.seo?.description || content.intro,
+    "image": content.cover_image?.url,
+    "author": {
+      "@type": "Organization",
+      "name": "AskSoul"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AskSoul",
+      "logo": { "@type": "ImageObject", "url": "https://asksoul.com/logo.png" }
+    },
+    "datePublished": new Date().toISOString()
+  };
+};
+
+/**
+ * THEME TOKEN SYSTEM
+ * Each theme is now defined by semantic tokens rather than just class strings.
+ */
+const THEME_CONFIGS = {
   "Snow Alabaster": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#F0F4F8_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#E1E8F0_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#D1D9E6_0%,_transparent_50%)] bg-[#F8FAFB]",
-    text: "text-[#4A5568]",
-    accentBg: "bg-[#E2E8F0]", accentText: "text-[#64748B]",
-    primaryBtn: "bg-white/40 backdrop-blur-md border border-white/60 text-[#4A5568] font-bold rounded-full px-10 py-3 shadow-sm hover:shadow-md transition-all",
-    cardBg: "bg-white/45 backdrop-blur-3xl", cardBorder: "border-white/50", highlight: "bg-white/20", shadow: "shadow-[0_20px_60px_-15px_rgba(100,116,139,0.05)]",
-    watermark: "text-[#CBD5E1]", badgeBg: "bg-white/80", badgeText: "text-[#475569]", titleText: "text-[#1E293B]", tagBg: "bg-[#F1F5F9]", tagText: "text-[#64748B]", bodyText: "text-[#334155]", iconBg: "bg-[#F1F5F9]", iconText: "text-[#475569]", quoteBg: "bg-white/20", quoteText: "text-[#0F172A]",
-    titleStyle: "font-black tracking-tight",
-    igGradient: "bg-gradient-to-br from-slate-100/80 via-blue-50/80 to-gray-100/80"
+    name: "雪山白",
+    palette: { primary: "#4A5568", accent: "#64748B", accentBg: "#E2E8F0", surface: "#F8FAFB", card: "rgba(255, 255, 255, 0.45)" },
+    text: { heading: "#1E293B", body: "#334155", muted: "#475569" },
+    decoration: { radius: "3rem", blur: "40px", shadow: "0 20px 60px rgba(100,116,139,0.05)", titleTracking: "tight" },
+    gradient: "from-slate-100/80 via-blue-50/80 to-gray-100/80"
   },
   "Matcha Zen": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#EBF5EC_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#D5E8D9_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#BBD6BE_0%,_transparent_50%)] bg-[#F1F8F2]",
-    text: "text-[#344E41]",
-    accentBg: "bg-[#DADEDC]", accentText: "text-[#588157]",
-    primaryBtn: "bg-[#588157] text-white font-bold rounded-full px-10 py-3 shadow-lg hover:bg-[#3A5A40] transition-all",
-    cardBg: "bg-white/50 backdrop-blur-2xl", cardBorder: "border-[#D5E8D9]", highlight: "bg-[#F8FCF9]", shadow: "shadow-[0_25px_70px_-20px_rgba(58,90,64,0.08)]",
-    watermark: "text-[#A3B18A]", badgeBg: "bg-[#DADEDC]", badgeText: "text-[#344E41]", titleText: "text-[#344E41]", tagBg: "bg-[#E9EDC9]", tagText: "text-[#588157]", bodyText: "text-[#3A5A40]", iconBg: "bg-[#DADEDC]", iconText: "text-[#588157]", quoteBg: "bg-[#DADEDC]/40", quoteText: "text-[#344E41]",
-    titleStyle: "font-black tracking-normal leading-[1.1]",
-    igGradient: "bg-gradient-to-br from-emerald-50/90 via-stone-50/90 to-teal-50/80"
+    name: "抹茶禅",
+    palette: { primary: "#588157", accent: "#588157", accentBg: "#DADEDC", surface: "#F1F8F2", card: "rgba(255, 255, 255, 0.5)" },
+    text: { heading: "#344E41", body: "#3A5A40", muted: "#344E41" },
+    decoration: { radius: "3rem", blur: "30px", shadow: "0 25px 70px rgba(58,90,64,0.08)", titleTracking: "normal" },
+    gradient: "from-emerald-50/90 via-stone-50/90 to-teal-50/80"
   },
   "Lavender Mist": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#F5F3FF_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#EDE9FE_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#DDD6FE_0%,_transparent_50%)] bg-[#FAF9FF]",
-    text: "text-[#4C1D95]",
-    accentBg: "bg-[#F3E8FF]", accentText: "text-[#7C3AED]",
-    primaryBtn: "bg-white/50 backdrop-blur-lg border border-purple-100 text-[#7C3AED] font-bold rounded-full px-10 py-3 shadow-md hover:shadow-xl",
-    cardBg: "bg-white/55 backdrop-blur-3xl", cardBorder: "border-white/60", highlight: "bg-[#FDFBFF]", shadow: "shadow-[0_30px_80px_-25px_rgba(124,58,237,0.06)]",
-    watermark: "text-[#C4B5FD]", badgeBg: "bg-white/90", badgeText: "text-[#4C1D95]", titleText: "text-[#2E1065]", tagBg: "bg-[#F5F3FF]", tagText: "text-[#8B5CF6]", bodyText: "text-[#5B21B6]", iconBg: "bg-[#EDE9FE]", iconText: "text-[#7C3AED]", quoteBg: "bg-[#F3E8FF]/30", quoteText: "text-[#4C1D95]",
-    titleStyle: "font-black tracking-tight",
-    igGradient: "bg-gradient-to-br from-purple-100/80 via-fuchsia-100/80 to-pink-100/80"
+    name: "薰衣草",
+    palette: { primary: "#7C3AED", accent: "#8B5CF6", accentBg: "#F3E8FF", surface: "#FAF9FF", card: "rgba(255, 255, 255, 0.55)" },
+    text: { heading: "#2E1065", body: "#5B21B6", muted: "#4C1D95" },
+    decoration: { radius: "3rem", blur: "40px", shadow: "0 30px 80px rgba(124,58,237,0.06)", titleTracking: "tight" },
+    gradient: "from-purple-100/80 via-fuchsia-100/80 to-pink-100/80"
   },
   "Ocean Salt": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#F0F9FF_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#E0F2FE_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#BAE6FD_0%,_transparent_50%)] bg-[#F8FCFF]",
-    text: "text-[#075985]",
-    accentBg: "bg-[#E0F2FE]", accentText: "text-[#0284C7]",
-    primaryBtn: "bg-[#0284C7] text-white font-bold rounded-full px-10 py-3 shadow-xl hover:bg-[#0369A1] transition-all",
-    cardBg: "bg-white/40 backdrop-blur-2xl", cardBorder: "border-white/70", highlight: "bg-blue-50/20", shadow: "shadow-[0_20px_60px_-15px_rgba(14,165,233,0.07)]",
-    watermark: "text-[#7DD3FC]", badgeBg: "bg-[#F0F9FF]", badgeText: "text-[#075985]", titleText: "text-[#0C4A6E]", tagBg: "bg-[#E0F2FE]", tagText: "text-[#0284C7]", bodyText: "text-[#0369A1]", iconBg: "bg-[#F0F9FF]", iconText: "text-[#0284C7]", quoteBg: "bg-white/30", quoteText: "text-[#075985]",
-    titleStyle: "font-black tracking-wide",
-    igGradient: "bg-gradient-to-br from-sky-100/80 via-cyan-50/80 to-blue-100/80"
+    name: "海盐蓝",
+    palette: { primary: "#0284C7", accent: "#0284C7", accentBg: "#E0F2FE", surface: "#F8FCFF", card: "rgba(255, 255, 255, 0.4)" },
+    text: { heading: "#0C4A6E", body: "#0369A1", muted: "#075985" },
+    decoration: { radius: "3rem", blur: "30px", shadow: "0 20px 60px rgba(14,165,233,0.07)", titleTracking: "wide" },
+    gradient: "from-sky-100/80 via-cyan-50/80 to-blue-100/80"
   },
   "Rose Clay": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#FFF1F2_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#FFE4E6_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#FECDD3_0%,_transparent_50%)] bg-[#FFF5F5]",
-    text: "text-[#881337]",
-    accentBg: "bg-[#FFE4E6]", accentText: "text-[#E11D48]",
-    primaryBtn: "bg-[#E11D48] text-white font-bold rounded-full px-10 py-3 shadow-lg hover:bg-[#BE123C] transition-all",
-    cardBg: "bg-white/45 backdrop-blur-3xl", cardBorder: "border-[#FFE4E6]", highlight: "bg-[#FFF9F9]", shadow: "shadow-[0_35px_90px_-30px_rgba(225,29,72,0.09)]",
-    watermark: "text-[#FDA4AF]", badgeBg: "bg-[#FFF1F2]", badgeText: "text-[#881337]", titleText: "text-[#4C0519]", tagBg: "bg-[#FFE4E6]", tagText: "text-[#BE123C]", bodyText: "text-[#9F1239]", iconBg: "bg-[#FFF1F2]", iconText: "text-[#E11D48]", quoteBg: "bg-[#FFE4E6]/40", quoteText: "text-[#881337]",
-    titleStyle: "font-black tracking-tighter",
-    igGradient: "bg-gradient-to-br from-rose-100/80 via-red-50/80 to-pink-100/80"
+    name: "玫瑰陶",
+    palette: { primary: "#E11D48", accent: "#BE123C", accentBg: "#FFE4E6", surface: "#FFF5F5", card: "rgba(255, 255, 255, 0.45)" },
+    text: { heading: "#4C0519", body: "#9F1239", muted: "#881337" },
+    decoration: { radius: "3rem", blur: "40px", shadow: "0 35px 90px rgba(225,29,72,0.09)", titleTracking: "tighter" },
+    gradient: "from-rose-100/80 via-red-50/80 to-pink-100/80"
   },
   "Sunset Glow": {
-    bg: "mesh-bg bg-[radial-gradient(at_0%_0%,_#FFFBEB_0%,_transparent_50%),_radial-gradient(at_100%_0%,_#FEF3C7_0%,_transparent_50%),_radial-gradient(at_50%_100%,_#FDE68A_0%,_transparent_50%)] bg-[#FFFDF7]",
-    text: "text-[#92400E]",
-    accentBg: "bg-[#FEF3C7]", accentText: "text-[#D97706]",
-    primaryBtn: "bg-gradient-to-br from-[#F59E0B] to-[#D97706] text-white font-bold rounded-full px-10 py-3 shadow-xl hover:scale-105 transition-all",
-    cardBg: "bg-white/60 backdrop-blur-2xl", cardBorder: "border-[#FDE68A]", highlight: "bg-[#FFFDF9]", shadow: "shadow-[0_25px_70px_-20px_rgba(217,119,6,0.08)]",
-    watermark: "text-[#FCD34D]", badgeBg: "bg-[#FEF3C7]", badgeText: "text-[#92400E]", titleText: "text-[#78350F]", tagBg: "bg-[#FFFBEB]", tagText: "text-[#D97706]", bodyText: "text-[#B45309]", iconBg: "bg-[#FEF3C7]", iconText: "text-[#D97706]", quoteBg: "bg-white/40", quoteText: "text-[#92400E]",
-    titleStyle: "font-black tracking-normal",
-    igGradient: "bg-gradient-to-br from-orange-50/90 via-stone-50/90 to-amber-50/80"
+    name: "落日余晖",
+    palette: { primary: "#D97706", accent: "#D97706", accentBg: "#FEF3C7", surface: "#FFFDF7", card: "rgba(255, 255, 255, 0.6)" },
+    text: { heading: "#78350F", body: "#B45309", muted: "#92400E" },
+    decoration: { radius: "3rem", blur: "30px", shadow: "0 25px 70px rgba(217,119,6,0.08)", titleTracking: "normal" },
+    gradient: "from-orange-50/90 via-stone-50/90 to-amber-50/80"
   }
 };
+
+/**
+ * Mapper function to maintain backward compatibility with current components
+ */
+const THEME_MAP = Object.keys(THEME_CONFIGS).reduce((acc, key) => {
+  const config = THEME_CONFIGS[key];
+  acc[key] = {
+    bg: `bg-[var(--theme-surface)]`,
+    text: `text-[var(--theme-primary)]`,
+    accentBg: `bg-[var(--theme-accent-bg)]`,
+    accentText: `text-[var(--theme-accent)]`,
+    primaryBtn: `bg-white/40 backdrop-blur-md border border-white/60 text-[var(--theme-primary)] font-bold rounded-full px-10 py-3 shadow-sm hover:shadow-md transition-all`,
+    cardBg: `bg-[var(--theme-card)] backdrop-blur-[var(--theme-blur)]`,
+    cardBorder: "border-white/50",
+    highlight: "bg-white/20",
+    shadow: `shadow-[${config.decoration.shadow}]`,
+    watermark: "text-gray-300",
+    badgeBg: "bg-white/80",
+    badgeText: `text-[var(--theme-muted)]`,
+    titleText: `text-[var(--theme-heading)]`,
+    tagBg: `bg-[var(--theme-accent-bg)]`,
+    tagText: `text-[var(--theme-accent)]`,
+    bodyText: `text-[var(--theme-body)]`,
+    iconBg: `bg-[var(--theme-accent-bg)]`,
+    iconText: `text-[var(--theme-accent)]`,
+    quoteBg: "bg-white/20",
+    quoteText: `text-[var(--theme-heading)]`,
+    titleStyle: `font-black tracking-${config.decoration.titleTracking}`,
+    igGradient: `bg-gradient-to-br ${config.gradient}`
+  };
+  return acc;
+}, {});
 
 const PLACEHOLDER_DATA = {
   "Ranking": {
     title: "2024 年度治愈系生活方式排行榜",
     intro: "在这个快节奏的时代，我们比任何时候都更需要寻找内心的宁静。",
     type: "Ranking",
-    rankings: [
-      { rank: 1, sign: "清晨冥想", tag: "深度静心", desc: "在日出时分静坐10分钟，观察呼吸的流动。", addictiveFactor: "静谧的力量" },
-      { rank: 2, sign: "午后阅读", tag: "精神食粮", desc: "放下手机，翻开一本纸质书。", addictiveFactor: "跨越时空的共鸣" },
-      { rank: 3, sign: "赤脚踏青", tag: "大地连接", desc: "脱掉鞋袜，让脚掌直接触碰泥土或草地。", addictiveFactor: "原始的自由感" },
-      { rank: 4, sign: "整理空间", tag: "断舍离", desc: "清空一个抽屉或整理一片角落。", addictiveFactor: "掌控感的回归" },
-      { rank: 5, sign: "慢煮时光", tag: "烟火气", desc: "为自己煮一壶茶或煲一锅汤。", addictiveFactor: "生活的质感" },
-      { rank: 6, sign: "晚间散步", tag: "慢节奏", desc: "在落日余晖中随意行走。", addictiveFactor: "放松身心" },
-      { rank: 7, sign: "书写日记", tag: "自我对话", desc: "记录当下的感受与思考。", addictiveFactor: "内心的宁静" },
-      { rank: 8, sign: "深度睡眠", tag: "修复力", desc: "关掉灯光，彻底放松。", addictiveFactor: "能量补给" }
+    cover_image: { url: "", prompt: "" },
+    items: [
+      { id: "r1", title: "清晨冥想", tag: "深度静心", desc: "在日出时分静坐10分钟，观察呼吸的流动。", extra: { rank: 1, addictiveFactor: "静谧的力量" } },
+      { id: "r2", title: "午后阅读", tag: "精神食粮", desc: "放下手机，翻开一本纸质书。", extra: { rank: 2, addictiveFactor: "跨越时空的共鸣" } },
+      { id: "r3", title: "赤脚踏青", tag: "大地连接", desc: "脱掉鞋袜，让脚掌直接触碰泥土或草地。", extra: { rank: 3, addictiveFactor: "原始的自由感" } },
+      { id: "r4", title: "整理空间", tag: "断舍离", desc: "清空一个抽屉或整理一片角落。", extra: { rank: 4, addictiveFactor: "掌控感的回归" } },
+      { id: "r5", title: "慢煮时光", tag: "烟火气", desc: "为自己煮一壶茶或煲一锅汤。", extra: { rank: 5, addictiveFactor: "生活的质感" } },
+      { id: "r6", title: "晚间散步", tag: "慢节奏", desc: "在落日余晖中随意行走。", extra: { rank: 6, addictiveFactor: "放松身心" } },
+      { id: "r7", title: "书写日记", tag: "自我对话", desc: "记录当下的感受与思考。", extra: { rank: 7, addictiveFactor: "内心的宁静" } },
+      { id: "r8", title: "深度睡眠", tag: "修复力", desc: "关掉灯光，彻底放松。", extra: { rank: 8, addictiveFactor: "能量补给" } }
     ],
     recommendations: [{ id: 1, title: "如何建立专属的早起仪式感", hot: true }],
     quizzes: [{ title: "测一测你属于哪种疗愈型人格", color: "bg-pink-100 text-pink-700" }],
@@ -96,15 +139,12 @@ const PLACEHOLDER_DATA = {
     title: "透过这几张图，看清你潜意识里的渴望",
     intro: "心理学家认为，视觉选择往往投射出我们内心深处最真实的一面。",
     type: "ImageExplainer",
-    main: {
-      image_prompt: "Mystical forest, healing scene, dreamy vibe",
-      image_url: ""
-    },
+    cover_image: { url: "", prompt: "Mystical forest, healing scene, dreamy vibe" },
     items: [
-      { title: "迷雾森林", interpretation: "你目前可能处于某种迷茫期。", tag: "潜意识", warning: "别忽略信号" },
-      { title: "孤寂灯塔", interpretation: "你是一个独立且坚定的人。", tag: "独立", warning: "别总一个人扛" },
-      { title: "平静湖面", interpretation: "你内心渴望长久的安宁。", tag: "安宁", warning: "小心停滞不前" },
-      { title: "繁华闹市", interpretation: "你对社交和连接有强烈需求。", tag: "连接", warning: "别迷失在人群中" }
+      { id: "i1", title: "迷雾森林", desc: "你目前可能处于某种迷茫期。", tag: "潜意识", extra: { warning: "别忽略信号" } },
+      { id: "i2", title: "孤寂灯塔", desc: "你是一个独立且坚定的人。", tag: "独立", extra: { warning: "别总一个人扛" } },
+      { id: "i3", title: "平静湖面", desc: "你内心渴望长久的安宁。", tag: "安宁", extra: { warning: "小心停滞不前" } },
+      { id: "i4", title: "繁华闹市", desc: "你对社交和连接有强烈需求。", tag: "连接", extra: { warning: "别迷失在人群中" } }
     ],
     recommendations: [{ id: 1, title: "你最近的情绪，是在自救还是自耗？", hot: true }],
     quizzes: [{ title: "测一测你潜意识最深的执念", color: "bg-pink-100 text-pink-700" }],
@@ -115,11 +155,12 @@ const PLACEHOLDER_DATA = {
     title: "人工智能如何重塑未来的艺术创作？",
     intro: "艺术的边界正在经历前所未有的扩张与重组。",
     type: "LongForm",
-    sections: [
-      { subtitle: "技术的画布", content: "AI成为了数字化‘超级画笔’。", image_prompt: "AI art concept" },
-      { subtitle: "创意的新源泉", content: "算法与人类灵感的碰撞。", image_prompt: "" },
-      { subtitle: "审美范式的转移", content: "新的艺术风格正在诞生。", image_prompt: "" },
-      { subtitle: "艺术的未来", content: "人机协作将成为主流。", image_prompt: "" }
+    cover_image: { url: "", prompt: "AI art concept" },
+    items: [
+      { id: "l1", title: "技术的画布", desc: "AI成为了数字化‘超级画笔’。", image_prompt: "AI art concept" },
+      { id: "l2", title: "创意的新源泉", desc: "算法与人类灵感的碰撞。" },
+      { id: "l3", title: "审美范式的转移", desc: "新的艺术风格正在诞生。" },
+      { id: "l4", title: "艺术的未来", desc: "人机协作将成为主流。" }
     ],
     recommendations: [{ id: 1, title: "当技术成为艺术家的第二大脑", hot: true }],
     quizzes: [{ title: "测一测你的创作人格", color: "bg-pink-100 text-pink-700" }],
@@ -130,12 +171,13 @@ const PLACEHOLDER_DATA = {
     title: "职场新人如何快速建立专业信任？",
     intro: "专业感不是演出来的，而是堆叠出来的逻辑闭环。",
     type: "StepsGuide",
-    steps: [
-      { title: "凡事有交代", desc: "收到指令第一时间回复。", image_prompt: "Communication" },
-      { title: "件件有着落", desc: "执行中定时汇报进度。", image_prompt: "Progress" },
-      { title: "事事有回音", desc: "完成后主动确认结果。", image_prompt: "" },
-      { title: "时间有预判", desc: "合理安排工作优先级。", image_prompt: "" },
-      { title: "专业有沉淀", desc: "总结经验，不断复盘。", image_prompt: "" }
+    cover_image: { url: "", prompt: "Communication" },
+    items: [
+      { id: "s1", title: "凡事有交代", desc: "收到指令第一时间回复。", image_prompt: "Communication" },
+      { id: "s2", title: "件件有着落", desc: "执行中定时汇报进度。", image_prompt: "Progress" },
+      { id: "s3", title: "事事有回音", desc: "完成后主动确认结果。" },
+      { id: "s4", title: "时间有预判", desc: "合理安排工作优先级。" },
+      { id: "s5", title: "专业有沉淀", desc: "总结经验，不断复盘。" }
     ],
     recommendations: [{ id: 1, title: "为什么靠谱的人总能被看见", hot: true }],
     quizzes: [{ title: "测测你的职场信任值", color: "bg-pink-100 text-pink-700" }],
@@ -146,8 +188,11 @@ const PLACEHOLDER_DATA = {
     title: "极简主义 vs 极繁主义",
     intro: "生活的加法与减法。",
     type: "Compare",
-    optionA: { title: "极简主义", desc: "剥离多余，留下核心。", tag: "Less is More", image_prompt: "Minimalism" },
-    optionB: { title: "极繁主义", desc: "拥抱一切美好。", tag: "More is More", image_prompt: "Maximalism" },
+    cover_image: { url: "", prompt: "Lifestyle" },
+    items: [
+      { id: "c1", title: "极简主义", desc: "剥离多余，留下核心。", tag: "Less is More", image_prompt: "Minimalism" },
+      { id: "c2", title: "极繁主义", desc: "拥抱一切美好。", tag: "More is More", image_prompt: "Maximalism" }
+    ],
     recommendations: [{ id: 1, title: "你真正需要的，不一定更多", hot: true }],
     quizzes: [{ title: "测一测你的生活方式", color: "bg-pink-100 text-pink-700" }],
     quote: "繁花与荒野，都有它们存在的意义。关键不在于你拥有多少，而在于你是否在其中感到自由。",
@@ -157,15 +202,16 @@ const PLACEHOLDER_DATA = {
     title: "出发去冰岛前核对清单",
     intro: "行前确认以下事项。",
     type: "Checklist",
+    cover_image: { url: "", prompt: "Iceland landscape" },
     items: [
-      { title: "防水登山靴", desc: "冰岛的水是全方位的。" },
-      { title: "保暖内衣", desc: "层叠穿法是王道。" },
-      { title: "相机备用电池", desc: "低温环境下电量消耗快。" },
-      { title: "防水外套", desc: "遮风挡雨必不可少。" },
-      { title: "离线地图", desc: "部分地区信号微弱。" },
-      { title: "转换插头", desc: "欧标双圆孔。" },
-      { title: "急救包", desc: "安全第一。" },
-      { title: "好心情", desc: "这是最重要的。" }
+      { id: "ck1", title: "防水登山靴", desc: "冰岛的水是全方位的。" },
+      { id: "ck2", title: "保暖内衣", desc: "层叠穿法是王道。" },
+      { id: "ck3", title: "相机备用电池", desc: "低温环境下电量消耗快。" },
+      { id: "ck4", title: "防水外套", desc: "遮风挡雨必不可少。" },
+      { id: "ck5", title: "离线地图", desc: "部分地区信号微弱。" },
+      { id: "ck6", title: "转换插头", desc: "欧标双圆孔。" },
+      { id: "ck7", title: "急救包", desc: "安全第一。" },
+      { id: "ck8", title: "好心情", desc: "这是最重要的。" }
     ],
     recommendations: [{ id: 1, title: "旅行前最容易忽略的事", hot: true }],
     quizzes: [{ title: "测一测你的旅行人格", color: "bg-pink-100 text-pink-700" }],
@@ -176,7 +222,6 @@ const PLACEHOLDER_DATA = {
 };
 
 const App = () => {
-  const [imageUrl, setImageUrl] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isGeneratingContent, setIsGeneratingContent] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -188,10 +233,26 @@ const App = () => {
   const [language, setLanguage] = useState("繁体中文");
   const [articleContent, setArticleContent] = useState(PLACEHOLDER_DATA["Ranking"]);
 
+  useEffect(() => {
+    const config = THEME_CONFIGS[styleType];
+    if (config) {
+      const root = document.documentElement;
+      root.style.setProperty('--theme-primary', config.palette.primary);
+      root.style.setProperty('--theme-accent', config.palette.accent);
+      root.style.setProperty('--theme-accent-bg', config.palette.accentBg);
+      root.style.setProperty('--theme-surface', config.palette.surface);
+      root.style.setProperty('--theme-card', config.palette.card);
+      root.style.setProperty('--theme-heading', config.text.heading);
+      root.style.setProperty('--theme-body', config.text.body);
+      root.style.setProperty('--theme-muted', config.text.muted);
+      root.style.setProperty('--theme-radius', config.decoration.radius);
+      root.style.setProperty('--theme-blur', config.decoration.blur);
+    }
+  }, [styleType]);
+
   const handleTemplateChange = (type) => {
     setTemplateType(type);
     setArticleContent(PLACEHOLDER_DATA[type]);
-    setImageUrl("");
   };
 
   const activeTheme = THEME_MAP[styleType] || THEME_MAP["Snow Alabaster"];
@@ -215,47 +276,37 @@ const App = () => {
     if (templateType === "Checklist") countConstraints = "Generate EXACTLY 8 items. Each item description should be short but impactful.";
     if (templateType === "Compare") countConstraints = "Generate 2 options (A and B). Each 'desc' block MUST be detailed and comprehensive (150-200 words) to highlight the core contrast.";
 
-    const prompt = `You are a Taiwan IG/Threads Million-follower Healing Emotional Expert (台湾 IG/Threads 百万粉疗愈系情感专家). 
+    const promptText = `
+Role: You are a Taiwan IG/Threads Million-follower Healing Emotional Expert (台湾 IG/Threads 百万粉疗愈系情感专家). 
 Maintain a warm, soft, but crystal clear (温软清醒) tone. Your voice should feel like a late-night conversation that is both healing and enlightening. 
-Expertise: Astrology, MBTI, Love Psychology, and Emotional Value.
 
 Subject: 【${topic}】. 
-Language (lang): ${language}. 
-Style: ${styleType}. 
+Language: ${language}. 
 Template: ${templateType}.
 Constraints: ${countConstraints}
 
-Output Requirements:
-1. ALL content MUST be in ${language}. 
-2. Writing Style: 
-   - Force short sentence structures (强制短句分组).
-   - Single content blocks must be refined to 100-150 characters/words (精炼文案), ensuring they fit beautifully within premium card layouts.
-   - Use intentional white space (刻意留白) to create a high-end, breathable aesthetic.
-   - Subtitles and item titles MUST be poetic and emotionally resonant (e.g., '被温柔包裹的瞬间' instead of '第一名：冥想'), avoid mechanical or listicle-style naming.
-   - For 'LongForm' or long descriptions, use frequent double newlines (\\n\\n) to group sentences for a comfortable reading experience.
-3. IMPORTANT: The 'seo' object MUST include 'slug' (English with hyphens), 'title', 'description', and 'keywords' (a comma-separated list of 5-8 high-value SEO keywords in ${language} based on the topic).
-4. recommendations & quizzes: Strictly follow the healing persona's tone.
-5. Soul Modules (NEW): 
-   - 'quote': A single, punchy, Instagram-style inspirational quote (20-40 words).
-   - 'soul_warning': A warm but serious psychological warning or advice for the reader (40-60 words).
-6. Image Prompt Requirements (CRITICAL):
-   Every 'image_prompt' in the JSON MUST strictly follow this format:
-   "[Template: ${templateType}] [Style: ${styleType}] [Topic: ${topic}] [Composition: {ratio}] [Keywords: 杂志感, 疗愈感, 梦幻感, {generated_keywords}]"
-   - {ratio} should be: '16:9 (1200x675px)' for cover/LongForm/StepsGuide/ImageExplainer, and '1:1 (800x800px)' for Ranking/Compare.
-   - {generated_keywords} should be 3-5 specific, high-quality English keywords extracted from the content to make the image relevant to the text.
+Structure the response as a JSON object matching this schema:
+${schemaPrompt}
 
-Output JSON strictly matching this schema: ${schemaPrompt}. 
-Include 'recommendations', 'quizzes' AND an 'seo' object at the top level. 
-Use double newlines for paragraph spacing in descriptions.`;
+Important Constraints:
+- ${countConstraints}
+- SEO: Generate a SEO-friendly slug (URL safe), title (under 60 chars), description (under 160 chars), and keywords.
+- SEO Social: Add og_title, og_description for sharing.
+- Content: Use warm, healing language. Avoid generic advice.
+- Return ONLY the JSON object.`;
 
     try {
-      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`, {
+      const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
       });
       const data = await resp.json();
-      if (data.error) throw new Error(data.error.message);
+      if (data.error) {
+        setIsGeneratingContent(false);
+        alert(`API Error: ${data.error.message}`);
+        return;
+      }
       const raw = data.candidates[0].content.parts[0].text;
       const cleaned = raw.replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(cleaned);
@@ -278,72 +329,86 @@ Use double newlines for paragraph spacing in descriptions.`;
     }
   };
 
+  // ==========================================
+  // TEXT-TO-IMAGE (T2I) API INTEGRATION
+  // ==========================================
+  
+  // Helper to call your backend's T2I API (Midjourney/DALL-E)
+  const fetchT2IImage = async (promptText) => {
+    // 研发注意：此处需要替换为真实的文生图后端接口
+    console.log(`[T2I API] Sending prompt: "${promptText}"`);
+    
+    // 模拟网络请求延迟 (1.5秒)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // 开发环境兜底逻辑：为了在没有真实 API 的情况下也能预览，我们暂时用 Unsplash 模拟返回图片流
+    const mockStyleSuffix = styleType === "Matcha Zen" ? " zen, nature" : " cinematic";
+    return `https://source.unsplash.com/featured/1200x675/?${encodeURIComponent(promptText + mockStyleSuffix)}`;
+    
+    /* 真实的对接代码示例：
+    const response = await fetch('/api/v1/generate-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: promptText, aspectRatio: '16:9' })
+    });
+    const data = await response.json();
+    return data.imageUrl; 
+    */
+  };
+
   const generateImage = async () => {
-    if (!topic) return;
+    if (!articleContent.cover_image?.prompt && !topic) return;
     setIsGenerating(true);
-    const seed = Math.floor(Math.random() * 1000);
-    const styleSuffix = "minimalism, cinematic lighting, high-end photography";
-    const url = `https://images.unsplash.com/photo-1518005020481-a78a88974554?auto=format&fit=crop&q=80&w=1200&h=675&sig=${seed}&${encodeURIComponent(topic + " " + styleSuffix)}`;
-    setTimeout(() => { setImageUrl(url); setIsGenerating(false); }, 1000);
+    const promptToUse = articleContent.cover_image?.prompt || topic;
+    
+    try {
+      const generatedUrl = await fetchT2IImage(promptToUse);
+      setArticleContent(prev => ({
+        ...prev,
+        cover_image: { ...prev.cover_image, url: generatedUrl, prompt: promptToUse }
+      }));
+    } catch (err) {
+      console.error("Cover image generation failed", err);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
-  const generateItemImage = async (path, index, customPrompt, optionKey = null) => {
-    const seed = Math.floor(Math.random() * 10000);
-    const styleSuffix = "minimalism, cinematic lighting, editorial style, 4k";
-    const finalPrompt = `${customPrompt}, ${styleSuffix}`;
-    const url = `https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=800&sig=${seed}&${encodeURIComponent(finalPrompt)}`;
+  const generateItemImage = async (index, newPrompt) => {
+    const item = articleContent.items[index];
+    const promptToUse = newPrompt || item.image_prompt || topic;
+    if (!promptToUse) return;
 
-    const newContent = { ...articleContent };
-    if (optionKey) {
-      newContent[optionKey].image_url = url;
-    } else if (path === 'items') {
-      newContent.items[index].image_url = url;
-    } else if (path === 'rankings') {
-      newContent.rankings[index].image_url = url;
-    } else if (path === 'sections') {
-      newContent.sections[index].image_url = url;
-    } else if (path === 'steps') {
-      newContent.steps[index].image_url = url;
+    try {
+      const generatedUrl = await fetchT2IImage(promptToUse);
+      const newContent = { ...articleContent };
+      newContent.items[index] = { 
+        ...newContent.items[index], 
+        image_url: generatedUrl, 
+        image_prompt: promptToUse 
+      };
+      setArticleContent(newContent);
+    } catch (err) {
+      console.error("Item image generation failed", err);
     }
+  };
+
+  const removeItemImage = (index) => {
+    const newContent = { ...articleContent };
+    newContent.items[index].image_url = "";
     setArticleContent(newContent);
   };
 
-  const removeItemImage = (path, index, optionKey = null) => {
+  const uploadItemImage = (index, fileData) => {
     const newContent = { ...articleContent };
-    if (optionKey) {
-      newContent[optionKey].image_url = "";
-    } else if (path === 'items') {
-      newContent.items[index].image_url = "";
-    } else if (path === 'rankings') {
-      newContent.rankings[index].image_url = "";
-    } else if (path === 'sections') {
-      newContent.sections[index].image_url = "";
-    } else if (path === 'steps') {
-      newContent.steps[index].image_url = "";
-    }
-    setArticleContent(newContent);
-  };
-
-  const uploadItemImage = (path, index, fileData, optionKey = null) => {
-    const newContent = { ...articleContent };
-    if (optionKey) {
-      newContent[optionKey].image_url = fileData;
-    } else if (path === 'items') {
-      newContent.items[index].image_url = fileData;
-    } else if (path === 'rankings') {
-      newContent.rankings[index].image_url = fileData;
-    } else if (path === 'sections') {
-      newContent.sections[index].image_url = fileData;
-    } else if (path === 'steps') {
-      newContent.steps[index].image_url = fileData;
-    }
+    newContent.items[index].image_url = fileData;
     setArticleContent(newContent);
   };
 
   return (
-    <div className={`min-h-screen ${activeTheme.bg} ${activeTheme.text} transition-all duration-1000 p-4 md:p-8 relative overflow-hidden`}>
+    <div className={`min-h-screen ${activeTheme.bg} ${activeTheme.text} transition-all duration-1000 p-4 md:p-8 relative overflow-clip`}>
       <div className="noise-overlay" />
-      <div className="max-w-6xl mx-auto space-y-8 relative z-10">
+      <div className="max-w-7xl mx-auto space-y-8 relative z-10">
 
         {/* Floating Toolbar */}
         <div className={`sticky top-4 z-50 flex items-center justify-between ${activeTheme.igGradient} rounded-full px-6 py-3 shadow-2xl border ${activeTheme.cardBorder} backdrop-blur-xl bg-opacity-90`}>
@@ -393,8 +458,6 @@ Use double newlines for paragraph spacing in descriptions.`;
                   <option value="简体中文">简体中文</option>
                   <option value="English">English</option>
                   <option value="日本語">日本語</option>
-                  <option value="Français">Français</option>
-                  <option value="Deutsch">Deutsch</option>
                 </select>
               </div>
               <div className="flex items-end">
@@ -407,10 +470,20 @@ Use double newlines for paragraph spacing in descriptions.`;
         )}
 
         {/* Main Content Layout */}
-        <div className="flex flex-col md:flex-row gap-12 items-start relative">
+        <div className="flex flex-col md:flex-row gap-8 items-start relative">
           <div className="flex-1 space-y-12 min-w-0">
+            {/* JSON-LD Script for SEO */}
+            <script type="application/ld+json">
+              {JSON.stringify(generateJsonLd(articleContent))}
+            </script>
+
             {/* Cover Section */}
-            <div className="space-y-8">
+            <div className="space-y-8 relative">
+              {isGenerating && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/20 backdrop-blur-sm rounded-4xl">
+                  <div className="w-12 h-12 border-4 border-(--theme-primary) border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              )}
               <header className="text-center space-y-6">
                 <div className={`inline-flex items-center px-4 py-1.5 rounded-full ${activeTheme.accentBg} ${activeTheme.accentText} text-sm font-semibold border ${activeTheme.cardBorder} shadow-sm`}>
                   <Sun className="w-4 h-4 mr-2" /> AskSoul 专栏
@@ -429,15 +502,24 @@ Use double newlines for paragraph spacing in descriptions.`;
 
               <div className="w-full">
                 <ImageSlot
-                  url={imageUrl}
-                  prompt={topic}
-                  onPromptChange={setTopic}
+                  url={articleContent.cover_image?.url}
+                  prompt={articleContent.cover_image?.prompt || topic}
+                  onPromptChange={(val) => setArticleContent({
+                    ...articleContent,
+                    cover_image: { ...articleContent.cover_image, prompt: val }
+                  })}
                   onGenerate={generateImage}
-                  onRemove={() => setImageUrl("")}
-                  onUpload={setImageUrl}
+                  onRemove={() => setArticleContent({
+                    ...articleContent,
+                    cover_image: { ...articleContent.cover_image, url: "" }
+                  })}
+                  onUpload={(url) => setArticleContent({
+                    ...articleContent,
+                    cover_image: { ...articleContent.cover_image, url }
+                  })}
                   isPreviewMode={isPreviewMode}
                   theme={activeTheme}
-                  className="aspect-[16/9]"
+                  className="aspect-video"
                   recommendSize="16:9 (1200x675px)"
                 />
               </div>
@@ -515,7 +597,7 @@ Use double newlines for paragraph spacing in descriptions.`;
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-full md:w-[360px] flex-shrink-0 space-y-8 md:sticky md:top-24">
+          <div className="w-full md:w-[320px] shrink-0 space-y-8 md:sticky md:top-24">
             {!isPreviewMode && articleContent.seo && (
               <SEOMetadataPanel
                 seo={articleContent.seo}
