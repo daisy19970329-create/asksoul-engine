@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Search, Globe, Tag, AlignLeft, Check, Sparkles } from 'lucide-react';
 
 const SEOMetadataPanel = ({ seo, onUpdate, theme }) => {
